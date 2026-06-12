@@ -15,7 +15,10 @@
         <x-pwa-tags />
         @vite(['resources/css/app.css', 'resources/js/app.js'])
     </head>
-    <body class="font-sans text-gray-900 antialiased bg-gray-50 selection:bg-kanwil-blue-light selection:text-white">
+    <body class="font-sans text-gray-900 antialiased bg-gray-50 selection:bg-kanwil-blue-light selection:text-white relative">
+        <!-- Digital Pattern Overlay -->
+        <div class="absolute inset-0 pointer-events-none z-0 bg-digital-pattern opacity-100"></div>
+
         <!-- Top Navbar -->
         <header class="bg-white border-b border-gray-200 sticky top-0 z-50">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 flex justify-between items-center">
@@ -35,7 +38,7 @@
             </div>
         </header>
 
-        <div class="min-h-screen pt-8 pb-16 flex flex-col items-center">
+        <div class="min-h-screen pt-8 pb-16 flex flex-col items-center relative z-10">
             <div class="w-full sm:max-w-3xl mt-6 px-6 py-8 bg-white shadow-lg sm:rounded-xl border-t-4 border-kanwil-gold">
                 {{ $slot }}
             </div>
