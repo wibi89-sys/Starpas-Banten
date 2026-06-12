@@ -1,0 +1,39 @@
+{
+  "_comment": "PLACEHOLDER FILE - REPLACE WITH ACTUAL google-services.json FROM FIREBASE CONSOLE",
+  "_instructions": [
+    "1. Buka Firebase Console: https://console.firebase.google.com/",
+    "2. Buat project baru dengan nama 'STARPAS Banten' (atau gunakan project yang ada)",
+    "3. Tambah Android app dengan package name: com.starpas.banten",
+    "4. Download google-services.json",
+    "5. Rename dari google-services.json.placeholder ke google-services.json",
+    "6. Taruh di folder android/app/",
+    "7. Sync project di Android Studio"
+  ],
+  "project_info": {
+    "project_number": "REPLACE_ME",
+    "project_id": "starpas-banten",
+    "storage_bucket": "starpas-banten.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "REPLACE_ME",
+        "android_client_info": {
+          "package_name": "com.starpas.banten"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "REPLACE_ME"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

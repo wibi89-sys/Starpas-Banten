@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- STARPAS Banten brand colors (match Laravel public-clean layout gradient) -->
+    <color name="starpas_green_dark">#0a483a</color>
+    <color name="starpas_green_mid">#09594b</color>
+    <color name="starpas_green_blue">#0d364f</color>
+    <color name="starpas_green_emerald">#0d5240</color>
+    <color name="starpas_green_emerald_dark">#083b2e</color>
+    <color name="starpas_gold">#D97706</color>
+    <color name="starpas_gold_light">#F59E0B</color>
+    <color name="starpas_blue">#0B2B5E</color>
+    <color name="starpas_blue_light">#1E3A8A</color>
+    <color name="starpas_sky">#0EA5E9</color>
+    <color name="starpas_rose">#F43F5E</color>
+
+    <!-- Theme & system colors -->
+    <color name="white">#FFFFFF</color>
+    <color name="black">#000000</color>
+    <color name="transparent">#00000000</color>
+    <color name="splash_background">#0d5240</color>
+</resources>

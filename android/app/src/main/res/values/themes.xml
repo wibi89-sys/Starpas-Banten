@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools">
+
+    <!-- Base application theme -->
+    <style name="Theme.STARPASAndroid" parent="Theme.Material3.DayNight.NoActionBar">
+        <item name="colorPrimary">@color/starpas_green_emerald</item>
+        <item name="colorPrimaryVariant">@color/starpas_green_emerald_dark</item>
+        <item name="colorOnPrimary">@color/white</item>
+        <item name="colorSecondary">@color/starpas_gold</item>
+        <item name="colorSecondaryVariant">@color/starpas_gold_light</item>
+        <item name="colorOnSecondary">@color/white</item>
+        <item name="android:statusBarColor">@color/starpas_green_emerald</item>
+        <item name="android:windowLightStatusBar" tools:targetApi="m">false</item>
+        <item name="android:navigationBarColor">@color/starpas_green_emerald</item>
+        <item name="android:windowBackground">@color/white</item>
+    </style>
+
+    <!-- Splash screen theme (used while MainActivity is launching) -->
+    <style name="Theme.STARPASAndroid.Splash" parent="Theme.STARPASAndroid">
+        <item name="android:windowBackground">@drawable/splash_background</item>
+        <item name="android:statusBarColor">@color/starpas_green_emerald</item>
+        <item name="android:navigationBarColor">@color/starpas_green_emerald</item>
+    </style>
+
+    <!-- Error page theme -->
+    <style name="Theme.STARPASAndroid.NoActionBar" parent="Theme.STARPASAndroid" />
+
+</resources>

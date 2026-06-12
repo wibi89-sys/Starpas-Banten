@@ -57,3 +57,9 @@ If you discover a security vulnerability within Laravel, please send an e-mail t
 ## License
 
 The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+
+## Mobile App (Android)
+
+An Android WebView app is included in the `android/` folder. Open it in Android Studio to build and distribute the native Android application.
+
+See [android/README.md](android/README.md) for setup, build, and deployment instructions.
