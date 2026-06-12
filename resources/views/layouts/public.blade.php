@@ -17,7 +17,7 @@
     </head>
     <body class="font-sans text-gray-900 antialiased bg-gray-50 selection:bg-kanwil-blue-light selection:text-white relative">
         <!-- Digital Pattern Overlay -->
-        <div class="absolute inset-0 pointer-events-none z-0 bg-digital-pattern opacity-100"></div>
+        <div class="absolute inset-0 pointer-events-none z-0 bg-digital-pattern opacity-[0.15]"></div>
 
         <!-- Top Navbar -->
         <header class="bg-white border-b border-gray-200 sticky top-0 z-50">

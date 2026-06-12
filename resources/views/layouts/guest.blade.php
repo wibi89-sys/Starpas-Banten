@@ -18,7 +18,7 @@
     <body class="font-sans text-gray-900 antialiased">
         <div class="min-h-screen flex flex-col sm:justify-center items-center pt-6 sm:pt-0 bg-gray-100 relative">
             <!-- Digital Pattern Overlay -->
-            <div class="absolute inset-0 pointer-events-none z-0 bg-digital-pattern opacity-100"></div>
+            <div class="absolute inset-0 pointer-events-none z-0 bg-digital-pattern opacity-[0.15]"></div>
 
             <div class="relative z-10 w-full flex flex-col sm:justify-center items-center">
                 <div>

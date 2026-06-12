@@ -22,7 +22,7 @@
     </head>
     <body class="font-sans antialiased text-gray-900 bg-gray-50 h-full flex flex-col justify-between relative">
         <!-- Digital Pattern Overlay -->
-        <div class="absolute inset-0 pointer-events-none z-0 bg-digital-pattern opacity-100"></div>
+        <div class="absolute inset-0 pointer-events-none z-0 bg-digital-pattern opacity-[0.15]"></div>
         <div class="relative z-10 flex flex-col justify-between h-full w-full">
             {{ $slot }}
         </div>

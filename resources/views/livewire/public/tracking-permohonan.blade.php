@@ -1,4 +1,4 @@
-<div class="min-h-screen flex flex-col justify-between bg-gray-50" x-data="{ isSearched: @entangle('isSearched') }" x-effect="if (isSearched) { setTimeout(() => { document.getElementById('tracking-result-section')?.scrollIntoView({ behavior: 'smooth' }) }, 150) }">
+<div class="min-h-screen flex flex-col justify-between bg-transparent" x-data="{ isSearched: @entangle('isSearched') }" x-effect="if (isSearched) { setTimeout(() => { document.getElementById('tracking-result-section')?.scrollIntoView({ behavior: 'smooth' }) }, 150) }">
     <!-- Style block for animations -->
     <style>
         @keyframes scan {
@@ -42,8 +42,11 @@
 
     <!-- Top Header & Hero wrapped in green-teal gradient -->
     <div class="bg-gradient-to-r from-[#0a483a] via-[#09594b] to-[#0d364f] text-white relative z-10 overflow-hidden flex-shrink-0">
+        <!-- Digital Pattern Overlay khusus untuk hero gelap: mint + gold -->
+        <div class="absolute inset-0 pointer-events-none z-0 bg-hero-pattern opacity-[0.15]"></div>
+
         <!-- Top Header -->
-        <header class="bg-transparent border-b border-white/5 py-4">
+        <header class="bg-transparent border-b border-white/5 py-4 relative z-10">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center">
                 <!-- Left Brand -->
                 <div class="flex items-center gap-3">
@@ -76,7 +79,7 @@
         </header>
 
         <!-- Hero Section -->
-        <section class="pt-12 pb-24 lg:pb-36 px-4">
+        <section class="pt-12 pb-24 lg:pb-36 px-4 relative z-10">
             <div class="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
                 
                 <!-- Left Side Content -->
@@ -100,14 +103,16 @@
                             {{ $settings->singkatan ?? 'STARPAS' }}
                         </span>
                     </h1>
-                    <h2 class="text-2xl sm:text-3xl md:text-4xl font-extrabold text-white/90 tracking-wide mb-4 font-display leading-tight">
-                        {!! $instansiHtml !!}
-                    </h2>
-                    <div class="flex items-center gap-3 border-l-2 border-amber-400 pl-4 py-1 mb-6">
-                        <p class="text-sm sm:text-base text-amber-400 font-bold tracking-wider uppercase font-display">
+                    
+                    <div class="flex items-center gap-3 border-l-2 border-amber-400 pl-4 py-1 mb-4">
+                        <p class="text-base sm:text-lg md:text-xl text-amber-400 font-extrabold tracking-wider uppercase font-display">
                             {{ $settings->deskripsi ?? 'Sistem Terpadu Aksi Responsif' }}
                         </p>
                     </div>
+
+                    <h2 class="text-2xl sm:text-3xl md:text-4xl font-extrabold text-white/90 tracking-wide mb-6 font-display leading-tight">
+                        {!! $instansiHtml !!}
+                    </h2>
                     
                     <p class="text-sm text-slate-200 font-bold tracking-wide mb-6 max-w-xl">
                         Silahkan pilih layanan yang akan anda gunakan,

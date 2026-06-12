@@ -115,7 +115,7 @@
 
             <!-- Page Content -->
             <main class="flex-1 overflow-x-hidden overflow-y-auto bg-gray-50 p-4 sm:p-6 relative">
-                <div class="absolute inset-0 pointer-events-none z-0 bg-digital-pattern opacity-100"></div>
+                <div class="absolute inset-0 pointer-events-none z-0 bg-digital-pattern opacity-[0.15]"></div>
                 <div class="relative z-10">
                     {{ $slot }}
                 </div>
