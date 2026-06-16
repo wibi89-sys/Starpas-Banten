@@ -87,8 +87,8 @@ class MainActivity : AppCompatActivity() {
             databaseEnabled = true
             domStorageEnabled = true
             // Disable text selection to feel more native (input/textarea still selectable)
-            isAllowFileAccessFromFileURLs = false
-            isAllowUniversalAccessFromFileURLs = false
+            allowFileAccessFromFileURLs = false
+            allowUniversalAccessFromFileURLs = false
             // Better HTTPS handling
             mixedContentMode = WebSettings.MIXED_CONTENT_COMPATIBILITY_MODE
             useWideViewPort = true

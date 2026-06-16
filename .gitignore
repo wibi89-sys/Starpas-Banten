@@ -28,3 +28,7 @@ android/build
 android/*.iml
 android/local.properties
 android/google-services.json
+
+# Temp binary assets
+/temp_bin
+

@@ -47,7 +47,6 @@ class AppFirebaseMessagingService : FirebaseMessagingService() {
             flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
             // Pass tracking number as deep link if present
             data["tracking_number"]?.let { tracking ->
-                data = Intent(this, MainActivity::class.java)
                 putExtra("tracking_number", tracking)
             }
         }
