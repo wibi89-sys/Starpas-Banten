@@ -83,7 +83,7 @@
             <div class="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
                 
                 <!-- Left Side Content -->
-                <div class="lg:col-span-7 flex flex-col justify-center text-left">
+                <div class="lg:col-span-7 flex flex-col justify-center text-left order-2">
                     <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/10 border border-white/10 text-xs font-semibold text-slate-200 w-fit mb-6 shadow-sm">
                         <svg class="w-3.5 h-3.5 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
                         Lacak Progress Permohonan Anda
@@ -180,7 +180,7 @@
                 </div>
 
                 <!-- Right Side Form Card (Overlapping wave divider) -->
-                <div class="lg:col-span-5 flex justify-center -mb-20 lg:-mb-36 relative z-20 -translate-y-8 lg:-translate-y-20">
+                <div class="lg:col-span-5 flex justify-center -mb-20 lg:-mb-36 relative z-20 -translate-y-8 lg:-translate-y-20 order-1">
                     <div class="w-full max-w-md bg-white rounded-2xl shadow-2xl p-8 border border-gray-100 relative text-gray-800 animate-float">
                         <div class="flex justify-center mb-6">
                             <div class="h-14 w-14 rounded-full bg-emerald-50 border border-emerald-100 flex items-center justify-center shadow-inner">
@@ -190,8 +190,8 @@
                             </div>
                         </div>
 
-                        <h3 class="text-xl font-bold text-gray-900 text-center mb-1">Cek Tracking Permohonan</h3>
-                        <p class="text-xs text-gray-500 text-center mb-6">Masukkan kode tracking untuk melihat progress</p>
+                        <h3 class="text-xl font-bold text-gray-900 text-center mb-1">Tracking Layanan Anda</h3>
+                        <p class="text-xs text-gray-500 text-center mb-6">Masukkan kode tracking untuk melihat status permohonan Anda</p>
 
                         <!-- Tracking Input Group with animations -->
                         <form wire:submit="search">
