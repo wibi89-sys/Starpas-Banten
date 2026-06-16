@@ -16,22 +16,30 @@ class FormPerizinan extends Component
     use WithFileUploads;
 
     public $nama_lengkap;
-    public $nik;
+    public $nomor_identitas;
     public $instansi;
-    public $tujuan;
-    public $lampiran_proposal;
+    public $alamat_lengkap;
+    public $nomor_kontak;
+    public $nomor_surat;
+    public $jenis_perizinan;
+    public $uraian;
     public $kartu_identitas;
+    public $surat_pengantar;
 
     public $isSuccess = false;
     public $trackingNumber = '';
 
     protected $rules = [
         'nama_lengkap' => 'required|string|max:255',
-        'nik' => 'required|string|digits:16',
+        'nomor_identitas' => 'required|string|max:50',
         'instansi' => 'required|string|max:255',
-        'tujuan' => 'required|string',
-        'lampiran_proposal' => 'required|file|mimes:pdf,doc,docx|max:5120', // Max 5MB
-        'kartu_identitas' => 'required|file|mimes:jpg,jpeg,png,pdf|max:5120', // Max 5MB
+        'alamat_lengkap' => 'required|string',
+        'nomor_kontak' => 'required|string|max:20',
+        'nomor_surat' => 'required|string|max:255',
+        'jenis_perizinan' => 'required|string',
+        'uraian' => 'required|string',
+        'kartu_identitas' => 'required|file|mimes:jpg,jpeg,png,pdf|max:5120', // Maks 5MB
+        'surat_pengantar' => 'required|file|mimes:pdf|max:5120', // Hanya PDF, Maks 5MB
     ];
 
     public function submit(WorkflowService $workflowService)
@@ -45,16 +53,20 @@ class FormPerizinan extends Component
         );
 
         // Upload files
-        $path = $this->lampiran_proposal->store('lampiran_permohonan', 'public');
         $pathKtp = $this->kartu_identitas->store('lampiran_identitas', 'public');
+        $pathSurat = $this->surat_pengantar->store('lampiran_permohonan', 'public');
 
         $payload = [
             'nama_lengkap' => $this->nama_lengkap,
-            'nik' => $this->nik,
+            'nomor_identitas' => $this->nomor_identitas,
             'instansi' => $this->instansi,
-            'tujuan' => $this->tujuan,
-            'lampiran_path' => $path,
+            'alamat_lengkap' => $this->alamat_lengkap,
+            'nomor_kontak' => $this->nomor_kontak,
+            'nomor_surat' => $this->nomor_surat,
+            'jenis_perizinan' => $this->jenis_perizinan,
+            'uraian' => $this->uraian,
             'kartu_identitas_path' => $pathKtp,
+            'lampiran_path' => $pathSurat,
             'tipe_form' => 'Perizinan'
         ];
 

@@ -16,20 +16,35 @@ class FormInformasi extends Component
     use WithFileUploads;
 
     public $nama_pemohon;
+    public $instansi_asal;
     public $nomor_identitas;
+    public $alamat_lengkap;
+    public $nomor_hp;
     public $jenis_informasi;
-    public $alasan_permintaan;
-    public $lampiran_identitas;
+    public $tujuan_penggunaan;
+    public $lampiran_surat_permohonan;
+    public $lampiran_ktp;
 
     public $isSuccess = false;
     public $trackingNumber = '';
 
-    protected $rules = [
-        'nama_pemohon' => 'required|string|max:255',
-        'nomor_identitas' => 'required|string|max:50',
-        'jenis_informasi' => 'required|string|max:255',
-        'alasan_permintaan' => 'required|string',
-        'lampiran_identitas' => 'required|file|mimes:jpg,jpeg,png,pdf|max:5120', // Max 5MB
+    protected function rules(): array
+    {
+        return [
+            'nama_pemohon' => 'required|string|max:255',
+            'instansi_asal' => 'required|string|max:255',
+            'nomor_identitas' => 'required|string|max:16|digits:16',
+            'alamat_lengkap' => 'required|string|max:500',
+            'nomor_hp' => ['required', 'string', 'max:20', 'regex:/^(08|62)\d{8,13}$/'],
+            'jenis_informasi' => 'required|string|max:255',
+            'tujuan_penggunaan' => 'required|string|max:255',
+            'lampiran_surat_permohonan' => 'required|file|mimes:pdf,jpg,jpeg,png|max:5120',
+            'lampiran_ktp' => 'required|file|mimes:pdf,jpg,jpeg,png|max:5120',
+        ];
+    }
+
+    protected $messages = [
+        'nomor_hp.regex' => 'Nomor HP harus diawali 08 atau 62 dan hanya berisi angka.',
     ];
 
     public function submit(WorkflowService $workflowService)
@@ -42,14 +57,19 @@ class FormInformasi extends Component
             ['kategori' => 'Informasi', 'sla_hari' => 7, 'is_active' => true]
         );
 
-        $path = $this->lampiran_identitas->store('lampiran_identitas', 'public');
+        $pathSurat = $this->lampiran_surat_permohonan->store('lampiran_permohonan', 'public');
+        $pathKtp = $this->lampiran_ktp->store('lampiran_identitas', 'public');
 
         $payload = [
-            'nama_pemohon' => $this->nama_pemohon,
-            'nomor_identitas' => $this->nomor_identitas,
-            'jenis_informasi' => $this->jenis_informasi,
-            'alasan_permintaan' => $this->alasan_permintaan,
-            'lampiran_path' => $path,
+            'nama_lengkap' => $this->nama_pemohon,
+            'instansi_asal' => $this->instansi_asal,
+            'nik' => $this->nomor_identitas,
+            'alamat_lengkap' => $this->alamat_lengkap,
+            'nomor_hp' => $this->nomor_hp,
+            'uraian_informasi' => $this->jenis_informasi,
+            'tujuan_penggunaan' => $this->tujuan_penggunaan,
+            'lampiran_surat_path' => $pathSurat,
+            'lampiran_ktp_path' => $pathKtp,
             'tipe_form' => 'Informasi'
         ];
 

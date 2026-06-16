@@ -74,23 +74,44 @@
                                     </div>
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-600">{{ $user->email }}</td>
-                                <td class="px-6 py-4 whitespace-nowrap">
-                                    @php
-                                        $userRoles = $user->getRoleNames();
-                                    @endphp
-                                    @foreach($userRoles as $roleName)
+                                <td class="px-6 py-4">
+                                    <div class="flex flex-wrap gap-1.5">
                                         @php
-                                            $roleColor = match($roleName) {
-                                                'Super Admin' => 'bg-purple-100 text-purple-800 border-purple-200',
-                                                'Admin'       => 'bg-blue-100 text-blue-800 border-blue-200',
-                                                'Bidang'      => 'bg-green-100 text-green-800 border-green-200',
-                                                default       => 'bg-gray-100 text-gray-800 border-gray-200',
-                                            };
+                                            $userRoles = $user->getRoleNames();
                                         @endphp
-                                        <span class="px-2.5 py-0.5 rounded-full text-xs font-bold border {{ $roleColor }}">
-                                            {{ $roleName }}
-                                        </span>
-                                    @endforeach
+                                        @forelse($userRoles as $roleName)
+                                            @php
+                                                $roleColor = match($roleName) {
+                                                    'Super Admin'       => 'bg-purple-100 text-purple-800 border-purple-200',
+                                                    'Admin Pelayanan'   => 'bg-blue-100 text-blue-800 border-blue-200',
+                                                    'Pejabat Disposisi' => 'bg-amber-100 text-amber-800 border-amber-200',
+                                                    'Admin Bidang'      => 'bg-green-100 text-green-800 border-green-200',
+                                                    'Operator UPT'      => 'bg-indigo-100 text-indigo-800 border-indigo-200',
+                                                    'Reviewer'          => 'bg-teal-100 text-teal-800 border-teal-200',
+                                                    'Pimpinan'          => 'bg-rose-100 text-rose-800 border-rose-200',
+                                                    'Publik'            => 'bg-gray-100 text-gray-800 border-gray-200',
+                                                    default             => 'bg-gray-50 text-gray-600 border-gray-200',
+                                                };
+                                            @endphp
+                                            <div class="inline-flex flex-col gap-0.5">
+                                                <span class="inline-block px-2.5 py-0.5 rounded-full text-xs font-bold border {{ $roleColor }}">
+                                                    {{ $roleName }}
+                                                </span>
+                                                @if($roleName === 'Admin Bidang' && $user->bidang)
+                                                    <span class="text-[10px] text-gray-500 font-medium pl-1">
+                                                        📍 {{ $user->bidang->nama_bidang }}
+                                                    </span>
+                                                @endif
+                                                @if($roleName === 'Operator UPT' && $user->upt)
+                                                    <span class="text-[10px] text-gray-500 font-medium pl-1">
+                                                        🏢 {{ $user->upt->nama_upt }}
+                                                    </span>
+                                                @endif
+                                            </div>
+                                        @empty
+                                            <span class="text-xs text-gray-400 italic">Tidak ada role</span>
+                                        @endforelse
+                                    </div>
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                                     {{ $user->created_at->translatedFormat('d M Y') }}
@@ -134,9 +155,9 @@
         <div class="fixed inset-0 z-50 flex items-center justify-center p-4"
              x-data>
             <div class="absolute inset-0 bg-gray-900/60 backdrop-blur-sm" wire:click="$set('showModal', false)"></div>
-            <div class="relative bg-white rounded-2xl shadow-2xl w-full max-w-lg z-10 overflow-hidden">
+            <div class="relative bg-white rounded-2xl shadow-2xl w-full max-w-lg z-10 overflow-hidden flex flex-col max-h-[90vh]">
                 {{-- Modal Header --}}
-                <div class="bg-gradient-to-r from-kanwil-gold to-yellow-500 px-6 py-5 text-white">
+                <div class="bg-gradient-to-r from-kanwil-gold to-yellow-500 px-6 py-5 text-white flex-shrink-0">
                     <div class="flex items-center justify-between">
                         <h3 class="text-lg font-bold">
                             {{ $isEditing ? 'Edit Pengguna' : 'Tambah Pengguna Baru' }}
@@ -147,54 +168,86 @@
                     </div>
                 </div>
 
-                {{-- Modal Body --}}
-                <form wire:submit="save" class="p-6 space-y-5">
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-1">Nama Lengkap *</label>
-                        <input wire:model="name" id="input-name" type="text"
-                            class="w-full rounded-lg border-gray-300 shadow-sm text-sm focus:ring-kanwil-gold focus:border-kanwil-gold"
-                            placeholder="Contoh: Budi Santoso">
-                        @error('name') <p class="text-red-500 text-xs mt-1">{{ $message }}</p> @enderror
+                {{-- Modal Body & Form --}}
+                <form wire:submit="save" class="flex flex-col flex-1 overflow-hidden">
+                    <div class="p-6 space-y-5 overflow-y-auto flex-1">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Nama Lengkap *</label>
+                            <input wire:model="name" id="input-name" type="text"
+                                class="w-full rounded-lg border-gray-300 shadow-sm text-sm focus:ring-kanwil-gold focus:border-kanwil-gold"
+                                placeholder="Contoh: Budi Santoso">
+                            @error('name') <p class="text-red-500 text-xs mt-1">{{ $message }}</p> @enderror
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Email *</label>
+                            <input wire:model="email" type="email"
+                                class="w-full rounded-lg border-gray-300 shadow-sm text-sm focus:ring-kanwil-gold focus:border-kanwil-gold"
+                                placeholder="Contoh: budi@kanwil.go.id">
+                            @error('email') <p class="text-red-500 text-xs mt-1">{{ $message }}</p> @enderror
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">
+                                Password {{ $isEditing ? '(Kosongkan jika tidak diubah)' : '*' }}
+                            </label>
+                            <input wire:model="password" type="password"
+                                class="w-full rounded-lg border-gray-300 shadow-sm text-sm focus:ring-kanwil-gold focus:border-kanwil-gold"
+                                placeholder="{{ $isEditing ? 'Isi untuk mengganti password' : 'Min. 8 karakter' }}">
+                            @error('password') <p class="text-red-500 text-xs mt-1">{{ $message }}</p> @enderror
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Konfirmasi Password</label>
+                            <input wire:model="password_confirmation" type="password"
+                                class="w-full rounded-lg border-gray-300 shadow-sm text-sm focus:ring-kanwil-gold focus:border-kanwil-gold"
+                                placeholder="Ulangi password">
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-semibold text-gray-700 mb-2">Pilih Level / Hak Akses *</label>
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5 p-4 bg-gray-50 border border-gray-200 rounded-xl max-h-60 overflow-y-auto shadow-inner">
+                                @foreach($roles as $role)
+                                    <label class="flex items-start gap-3 p-2.5 rounded-lg hover:bg-white transition cursor-pointer select-none hover:shadow-sm border border-transparent hover:border-gray-200">
+                                        <input type="checkbox" wire:model.live="selectedRoles" value="{{ $role->name }}"
+                                            class="mt-0.5 h-4.5 w-4.5 rounded border-gray-300 text-kanwil-blue focus:ring-kanwil-blue transition">
+                                        <span class="text-sm font-bold text-gray-700">{{ $role->name }}</span>
+                                    </label>
+                                @endforeach
+                            </div>
+                            @error('selectedRoles') <p class="text-red-500 text-xs mt-1 block">{{ $message }}</p> @enderror
+                        </div>
+
+                        @if(in_array('Admin Bidang', $selectedRoles))
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Pilih Tim Penugasan *</label>
+                                <select wire:model="selectedBidangId"
+                                    class="w-full rounded-lg border-gray-300 shadow-sm text-sm focus:ring-kanwil-gold focus:border-kanwil-gold">
+                                    <option value="">— Pilih Tim —</option>
+                                    @foreach($bidangs as $bidang)
+                                        <option value="{{ $bidang->id }}">{{ $bidang->nama_bidang }}</option>
+                                    @endforeach
+                                </select>
+                                @error('selectedBidangId') <p class="text-red-500 text-xs mt-1">{{ $message }}</p> @enderror
+                            </div>
+                        @endif
+
+                        @if(in_array('Operator UPT', $selectedRoles))
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Pilih UPT Penugasan *</label>
+                                <select wire:model="selectedUptId"
+                                    class="w-full rounded-lg border-gray-300 shadow-sm text-sm focus:ring-kanwil-gold focus:border-kanwil-gold">
+                                    <option value="">— Pilih UPT —</option>
+                                    @foreach($upts as $upt)
+                                        <option value="{{ $upt->id }}">{{ $upt->nama_upt }}</option>
+                                    @endforeach
+                                </select>
+                                @error('selectedUptId') <p class="text-red-500 text-xs mt-1">{{ $message }}</p> @enderror
+                            </div>
+                        @endif
                     </div>
 
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-1">Email *</label>
-                        <input wire:model="email" type="email"
-                            class="w-full rounded-lg border-gray-300 shadow-sm text-sm focus:ring-kanwil-gold focus:border-kanwil-gold"
-                            placeholder="Contoh: budi@kanwil.go.id">
-                        @error('email') <p class="text-red-500 text-xs mt-1">{{ $message }}</p> @enderror
-                    </div>
-
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-1">
-                            Password {{ $isEditing ? '(Kosongkan jika tidak diubah)' : '*' }}
-                        </label>
-                        <input wire:model="password" type="password"
-                            class="w-full rounded-lg border-gray-300 shadow-sm text-sm focus:ring-kanwil-gold focus:border-kanwil-gold"
-                            placeholder="{{ $isEditing ? 'Isi untuk mengganti password' : 'Min. 8 karakter' }}">
-                        @error('password') <p class="text-red-500 text-xs mt-1">{{ $message }}</p> @enderror
-                    </div>
-
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-1">Konfirmasi Password</label>
-                        <input wire:model="password_confirmation" type="password"
-                            class="w-full rounded-lg border-gray-300 shadow-sm text-sm focus:ring-kanwil-gold focus:border-kanwil-gold"
-                            placeholder="Ulangi password">
-                    </div>
-
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-1">Role / Hak Akses *</label>
-                        <select wire:model="selectedRole"
-                            class="w-full rounded-lg border-gray-300 shadow-sm text-sm focus:ring-kanwil-gold focus:border-kanwil-gold">
-                            <option value="">— Pilih Role —</option>
-                            @foreach($roles as $role)
-                                <option value="{{ $role->name }}">{{ $role->name }}</option>
-                            @endforeach
-                        </select>
-                        @error('selectedRole') <p class="text-red-500 text-xs mt-1">{{ $message }}</p> @enderror
-                    </div>
-
-                    <div class="pt-4 flex justify-end gap-3 border-t border-gray-100">
+                    <div class="px-6 py-4 bg-gray-50 flex justify-end gap-3 border-t border-gray-100 rounded-b-2xl flex-shrink-0">
                         <button type="button" wire:click="$set('showModal', false)"
                             class="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-lg transition">
                             Batal

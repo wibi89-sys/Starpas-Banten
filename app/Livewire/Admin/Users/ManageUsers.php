@@ -3,6 +3,8 @@
 namespace App\Livewire\Admin\Users;
 
 use App\Models\User;
+use App\Models\MasterBidang;
+use App\Models\MasterUpt;
 use Livewire\Component;
 use Livewire\Attributes\Layout;
 use Livewire\WithPagination;
@@ -26,7 +28,9 @@ class ManageUsers extends Component
     public string $email = '';
     public string $password = '';
     public string $password_confirmation = '';
-    public string $selectedRole = '';
+    public array $selectedRoles = [];
+    public ?int $selectedBidangId = null;
+    public ?int $selectedUptId = null;
 
     // Delete
     public ?int $deletingUserId = null;
@@ -41,12 +45,23 @@ class ManageUsers extends Component
             ? ['nullable', 'confirmed', Password::min(8)]
             : ['required', 'confirmed', Password::min(8)];
 
-        return [
+        $rules = [
             'name'          => 'required|string|max:255',
             'email'         => 'required|email|max:255|unique:users,email,' . ($this->editingUserId ?? 'NULL'),
             'password'      => $passwordRule,
-            'selectedRole'  => 'required|string|exists:roles,name',
+            'selectedRoles'  => 'required|array|min:1',
+            'selectedRoles.*' => 'required|string|exists:roles,name',
         ];
+
+        if (in_array('Admin Bidang', $this->selectedRoles)) {
+            $rules['selectedBidangId'] = 'required|exists:master_bidangs,id';
+        }
+
+        if (in_array('Operator UPT', $this->selectedRoles)) {
+            $rules['selectedUptId'] = 'required|exists:master_upts,id';
+        }
+
+        return $rules;
     }
 
     protected array $messages = [
@@ -55,7 +70,12 @@ class ManageUsers extends Component
         'email.unique'          => 'Email sudah digunakan oleh akun lain.',
         'password.required'     => 'Password wajib diisi.',
         'password.confirmed'    => 'Konfirmasi password tidak cocok.',
-        'selectedRole.required' => 'Pilih role untuk pengguna ini.',
+        'selectedRoles.required' => 'Pilih setidaknya satu role untuk pengguna ini.',
+        'selectedRoles.min'      => 'Pilih setidaknya satu role untuk pengguna ini.',
+        'selectedBidangId.required' => 'Tim wajib dipilih untuk level Admin Bidang.',
+        'selectedBidangId.exists'   => 'Tim yang dipilih tidak valid.',
+        'selectedUptId.required'    => 'UPT wajib dipilih untuk level Operator UPT.',
+        'selectedUptId.exists'      => 'UPT yang dipilih tidak valid.',
     ];
 
     public function updatedSearch(): void
@@ -78,7 +98,9 @@ class ManageUsers extends Component
         $this->editingUserId = $userId;
         $this->name = $user->name;
         $this->email = $user->email;
-        $this->selectedRole = $user->getRoleNames()->first() ?? '';
+        $this->selectedRoles = $user->getRoleNames()->toArray();
+        $this->selectedBidangId = $user->bidang_id;
+        $this->selectedUptId = $user->upt_id;
         $this->showModal = true;
     }
 
@@ -93,16 +115,20 @@ class ManageUsers extends Component
             if (!empty($this->password)) {
                 $user->password = Hash::make($this->password);
             }
+            $user->bidang_id = in_array('Admin Bidang', $this->selectedRoles) ? $this->selectedBidangId : null;
+            $user->upt_id = in_array('Operator UPT', $this->selectedRoles) ? $this->selectedUptId : null;
             $user->save();
-            $user->syncRoles([$this->selectedRole]);
+            $user->syncRoles($this->selectedRoles);
             session()->flash('success', 'Data pengguna berhasil diperbarui.');
         } else {
             $user = User::create([
                 'name'     => $this->name,
                 'email'    => $this->email,
                 'password' => Hash::make($this->password),
+                'bidang_id' => in_array('Admin Bidang', $this->selectedRoles) ? $this->selectedBidangId : null,
+                'upt_id'    => in_array('Operator UPT', $this->selectedRoles) ? $this->selectedUptId : null,
             ]);
-            $user->assignRole($this->selectedRole);
+            $user->assignRole($this->selectedRoles);
             session()->flash('success', 'Pengguna baru berhasil dibuat.');
         }
 
@@ -142,20 +168,24 @@ class ManageUsers extends Component
         $this->email = '';
         $this->password = '';
         $this->password_confirmation = '';
-        $this->selectedRole = '';
+        $this->selectedRoles = [];
+        $this->selectedBidangId = null;
+        $this->selectedUptId = null;
         $this->resetValidation();
     }
 
     public function render()
     {
-        $users = User::with('roles')
+        $users = User::with(['roles', 'bidang', 'upt'])
             ->when($this->search, fn ($q) => $q->where('name', 'like', '%' . $this->search . '%')
                 ->orWhere('email', 'like', '%' . $this->search . '%'))
             ->latest()
             ->paginate(10);
 
         $roles = Role::orderBy('name')->get();
+        $bidangs = MasterBidang::where('is_active', true)->orderBy('nama_bidang')->get();
+        $upts = MasterUpt::where('is_active', true)->orderBy('nama_upt')->get();
 
-        return view('livewire.admin.users.manage-users', compact('users', 'roles'));
+        return view('livewire.admin.users.manage-users', compact('users', 'roles', 'bidangs', 'upts'));
     }
 }

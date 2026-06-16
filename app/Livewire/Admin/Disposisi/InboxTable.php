@@ -36,8 +36,16 @@ class InboxTable extends Component
             $query->where('status', StatusPermohonan::VERIFICATION);
         } elseif ($user->hasRole('Pejabat Disposisi')) {
             $query->where('status', StatusPermohonan::DISPOSITION);
-        } elseif ($user->hasRole('Admin Bidang') || $user->hasRole('Operator UPT')) {
-            $query->whereIn('status', [StatusPermohonan::PROCESSING, StatusPermohonan::REVISION]);
+        } elseif ($user->hasRole('Admin Bidang')) {
+            $query->whereIn('status', [StatusPermohonan::PROCESSING, StatusPermohonan::REVISION])
+                  ->whereHas('disposisis', function ($q) use ($user) {
+                      $q->where('ke_bidang_id', $user->bidang_id);
+                  });
+        } elseif ($user->hasRole('Operator UPT')) {
+            $query->whereIn('status', [StatusPermohonan::PROCESSING, StatusPermohonan::REVISION])
+                  ->whereHas('disposisis', function ($q) use ($user) {
+                      $q->where('ke_upt_id', $user->upt_id);
+                  });
         } elseif ($user->hasRole('Reviewer') || $user->hasRole('Pimpinan')) {
             $query->where('status', StatusPermohonan::REVIEW);
         } else {

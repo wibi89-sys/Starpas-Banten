@@ -46,8 +46,8 @@ class ActionDetail extends Component
                     'tujuan_bidang_id' => 'required_without:tujuan_upt_id',
                     'tujuan_upt_id' => 'required_without:tujuan_bidang_id',
                 ], [
-                    'tujuan_bidang_id.required_without' => 'Pilih salah satu Bidang Tujuan atau UPT Tujuan.',
-                    'tujuan_upt_id.required_without' => 'Pilih salah satu Bidang Tujuan atau UPT Tujuan.'
+                    'tujuan_bidang_id.required_without' => 'Pilih salah satu Tim Tujuan atau UPT Tujuan.',
+                    'tujuan_upt_id.required_without' => 'Pilih salah satu Tim Tujuan atau UPT Tujuan.'
                 ]);
 
                 // Create PermohonanDisposisi
@@ -82,7 +82,7 @@ class ActionDetail extends Component
     public function render()
     {
         $bidangs = \App\Models\MasterBidang::all();
-        $upts = \App\Models\MasterUpt::all();
+        $upts = \App\Models\MasterUpt::where('is_active', true)->get();
         
         return view('livewire.admin.disposisi.action-detail', compact('bidangs', 'upts'));
     }
