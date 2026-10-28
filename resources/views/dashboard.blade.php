@@ -213,13 +213,13 @@
                             </div>
                         </a>
 
-                        <a href="{{ url('/') }}" wire:navigate class="group flex items-center p-3 sm:p-4 bg-gray-50 border border-gray-100 rounded-xl hover:bg-kanwil-gold hover:border-kanwil-gold transition duration-200">
-                            <div class="h-9 w-9 sm:h-10 sm:w-10 rounded-full bg-white text-kanwil-gold flex items-center justify-center shadow-sm group-hover:scale-110 transition duration-200 flex-shrink-0">
-                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
+                        <a href="{{ route('home') }}" class="group flex items-center p-3 sm:p-4 bg-gray-50 border border-gray-100 rounded-xl hover:bg-emerald-600 hover:border-emerald-600 transition duration-200">
+                            <div class="h-9 w-9 sm:h-10 sm:w-10 rounded-full bg-white text-emerald-600 flex items-center justify-center shadow-sm group-hover:scale-110 transition duration-200 flex-shrink-0">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
                             </div>
                             <div class="ml-3 sm:ml-4 min-w-0">
-                                <p class="text-sm font-bold text-gray-900 group-hover:text-white transition truncate">Lihat Portal Publik</p>
-                                <p class="text-xs text-gray-500 group-hover:text-yellow-100 transition truncate">Kembali ke halaman depan</p>
+                                <p class="text-sm font-bold text-gray-900 group-hover:text-white transition truncate">Halaman Tracking</p>
+                                <p class="text-xs text-gray-500 group-hover:text-emerald-100 transition truncate">Lacak permohonan & portal publik</p>
                             </div>
                         </a>
                     </div>

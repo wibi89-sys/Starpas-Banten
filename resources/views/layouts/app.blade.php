@@ -39,12 +39,12 @@
             :class="sidebarOpen ? 'translate-x-0' : '-translate-x-full'"
             class="fixed inset-y-0 left-0 z-50 w-64 bg-white shadow-xl flex flex-col transform transition-transform duration-200 ease-in-out md:static md:translate-x-0 md:flex md:flex-shrink-0">
             <div class="h-16 flex items-center justify-between gap-2 border-b border-gray-200 px-6">
-                <div class="flex items-center gap-2 min-w-0">
+                <a href="{{ route('home') }}" class="flex items-center gap-2 min-w-0 group" title="Buka Halaman Tracking Permohonan">
                     <div class="h-8 w-8 rounded-full bg-white flex items-center justify-center overflow-hidden p-0.5 shadow-sm flex-shrink-0">
                         <x-application-logo class="h-7 w-7" />
                     </div>
-                    <span class="text-base font-black text-kanwil-blue tracking-wider uppercase truncate">{{ $settings->singkatan ?? 'STARPAS' }}</span>
-                </div>
+                    <span class="text-base font-black text-kanwil-blue tracking-wider uppercase truncate group-hover:text-kanwil-blue-light transition-colors">{{ $settings->singkatan ?? 'STARPAS' }}</span>
+                </a>
                 <button @click="sidebarOpen = false" type="button" class="md:hidden text-gray-500 hover:text-gray-700 p-1 rounded">
                     <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
                 </button>
@@ -74,6 +74,14 @@
                     Settings Aplikasi
                 </a>
                 @endrole
+
+                <div class="pt-4 pb-2">
+                    <p class="px-4 text-xs font-semibold text-gray-400 uppercase tracking-wider">Halaman Depan</p>
+                </div>
+                <a href="{{ route('home') }}" @click="sidebarOpen = false" class="flex items-center px-4 py-3 {{ request()->routeIs('home') ? 'text-kanwil-blue bg-blue-50' : 'text-gray-600 hover:bg-gray-50 hover:text-kanwil-blue' }} rounded-lg font-medium transition-colors">
+                    <svg class="w-5 h-5 mr-3 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+                    Halaman Tracking
+                </a>
             </nav>
 
             <div class="border-t border-gray-200 p-4">
@@ -103,6 +111,12 @@
                     @endif
                 </div>
                 <div class="flex items-center space-x-3 sm:space-x-4 flex-shrink-0">
+                    <a href="{{ route('home') }}" class="inline-flex items-center gap-1.5 sm:gap-2 px-3 py-1.5 rounded-lg text-xs sm:text-sm font-semibold text-gray-700 bg-gray-50 hover:bg-blue-50 hover:text-kanwil-blue border border-gray-200 hover:border-blue-200 transition shadow-sm" title="Buka Halaman Tracking Permohonan">
+                        <svg class="w-4 h-4 text-emerald-600 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+                        <span class="hidden sm:inline">Halaman Tracking</span>
+                        <span class="sm:hidden">Tracking</span>
+                    </a>
+
                     <div class="text-right hidden sm:block">
                         <span class="block text-sm font-medium text-gray-900 truncate max-w-[160px]">{{ auth()->user()->name }}</span>
                         <span class="block text-xs text-gray-500">{{ auth()->user()->getRoleNames()->first() ?? 'User' }}</span>
