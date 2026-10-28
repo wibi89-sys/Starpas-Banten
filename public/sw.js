@@ -1,6 +1,5 @@
-const CACHE_NAME = 'starpas-banten-v2';
+const CACHE_NAME = 'starpas-banten-v3';
 const urlsToCache = [
-  '/',
   '/manifest.json',
   '/offline.html'
 ];
@@ -34,19 +33,11 @@ self.addEventListener('fetch', event => {
 
   event.respondWith(
     fetch(event.request)
-      .then(response => {
-        return response;
-      })
       .catch(() => {
-        return caches.match(event.request)
-          .then(cacheResponse => {
-            if (cacheResponse) {
-              return cacheResponse;
-            }
-            if (event.request.mode === 'navigate') {
-              return caches.match('/offline.html');
-            }
-          });
+        if (event.request.mode === 'navigate') {
+          return caches.match('/offline.html');
+        }
+        return caches.match(event.request);
       })
   );
 });

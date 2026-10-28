@@ -6,7 +6,7 @@
     <img src="{{ asset('storage/' . $settings->logo_path) }}" alt="{{ $settings->nama_instansi }}" {{ $attributes->merge(['class' => 'object-contain']) }}>
 @else
     <!-- Default Kemenimipas SVG Logo -->
-    <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" {{ $attributes }}>
+    <svg viewBox="0 0 100 100" width="36" height="36" fill="none" xmlns="http://www.w3.org/2000/svg" {{ $attributes }}>
         <circle cx="50" cy="50" r="46" stroke="#D97706" stroke-width="4" fill="#0B2B5E" />
         <circle cx="50" cy="50" r="42" stroke="#F59E0B" stroke-width="1.5" />
         <circle cx="50" cy="50" r="28" stroke="#D97706" stroke-width="2" />
