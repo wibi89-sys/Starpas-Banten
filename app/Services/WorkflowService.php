@@ -68,24 +68,74 @@ class WorkflowService
     /**
      * Update status and record timeline.
      */
-    public function updateStatus(Permohonan $permohonan, StatusPermohonan $statusBaru, string $catatan, ?int $userId = null): Permohonan
-    {
-        return DB::transaction(function () use ($permohonan, $statusBaru, $catatan, $userId) {
+    public function updateStatus(
+        Permohonan $permohonan,
+        StatusPermohonan $statusBaru,
+        string $catatan,
+        ?int $userId = null,
+        ?string $fileSurat = null,
+        array $suratMetadata = [],
+        ?string $lampiranTimeline = null,
+        ?string $namaLampiranTimeline = null
+    ): Permohonan {
+        return DB::transaction(function () use ($permohonan, $statusBaru, $catatan, $userId, $fileSurat, $suratMetadata, $lampiranTimeline, $namaLampiranTimeline) {
             $statusLama = $permohonan->status;
 
-            $permohonan->update([
+            $updateData = [
                 'status' => $statusBaru
-            ]);
+            ];
 
-            $this->catatTimeline($permohonan, $statusLama, $statusBaru, $catatan, $userId);
+            if ($fileSurat) {
+                $updateData['file_surat_jawaban'] = $fileSurat;
+            }
+            if (!empty($suratMetadata['nomor_surat_jawaban'])) {
+                $updateData['nomor_surat_jawaban'] = $suratMetadata['nomor_surat_jawaban'];
+            }
+            if (!empty($suratMetadata['perihal_surat_jawaban'])) {
+                $updateData['perihal_surat_jawaban'] = $suratMetadata['perihal_surat_jawaban'];
+            }
+            if (!empty($suratMetadata['tanggal_surat_jawaban'])) {
+                $updateData['tanggal_surat_jawaban'] = $suratMetadata['tanggal_surat_jawaban'];
+            }
+
+            $permohonan->update($updateData);
+
+            $this->catatTimeline(
+                $permohonan,
+                $statusLama,
+                $statusBaru,
+                $catatan,
+                $userId,
+                $lampiranTimeline ?? $fileSurat,
+                $namaLampiranTimeline
+            );
 
             // Kirim notifikasi WA update status via Fonnte
             $payload = $permohonan->payload_data ?? [];
             $nomorKontak = $payload['nomor_kontak'] ?? null;
             if ($nomorKontak) {
                 $nama = $payload['nama_lengkap'] ?? $payload['nama_pelapor'] ?? $payload['nama_pemohon'] ?? 'Pemohon';
-                $statusLabel = $statusBaru->label();
-                $pesan = "📋 *Update Status Permohonan*\n\nYth. {$nama},\n\nStatus permohonan *{$permohonan->tracking_number}* telah diperbarui:\n\n📌 Status: *{$statusLabel}*\n💬 Catatan: {$catatan}\n\nTerima kasih atas kepercayaan Anda.\n_STARPAS Kanwil Ditjenpas Banten_";
+                $trackingUrl = url('/?code=' . $permohonan->tracking_number);
+
+                if ($statusBaru === StatusPermohonan::COMPLETED) {
+                    $pesan = "✅ *Permohonan Selesai*\n\nYth. {$nama},\n\nPermohonan Anda dengan nomor resi *{$permohonan->tracking_number}* telah *SELESAI* diproses.";
+                    
+                    if (!empty($permohonan->nomor_surat_jawaban)) {
+                        $pesan .= "\n\n📄 *No. Surat:* {$permohonan->nomor_surat_jawaban}";
+                    }
+                    if (!empty($permohonan->perihal_surat_jawaban)) {
+                        $pesan .= "\n📌 *Perihal:* {$permohonan->perihal_surat_jawaban}";
+                    }
+                    if ($permohonan->file_surat_jawaban) {
+                        $fileUrl = asset('storage/' . $permohonan->file_surat_jawaban);
+                        $pesan .= "\n\nUnduh surat persetujuan/dokumen resmi Anda melalui tautan:\n🔗 {$fileUrl}";
+                    }
+                    $pesan .= "\n\n💬 *Catatan:* {$catatan}\n\nAnda dapat memantau status dan dokumen permohonan di:\n{$trackingUrl}\n\nTerima kasih atas kepercayaan Anda.\n_STARPAS Kanwil Ditjenpas Banten_";
+                } else {
+                    $statusLabel = $statusBaru->label();
+                    $pesan = "📋 *Update Status Permohonan*\n\nYth. {$nama},\n\nStatus permohonan *{$permohonan->tracking_number}* telah diperbarui:\n\n📌 Status: *{$statusLabel}*\n💬 Catatan: {$catatan}\n\nPantau status Anda di:\n{$trackingUrl}\n\nTerima kasih atas kepercayaan Anda.\n_STARPAS Kanwil Ditjenpas Banten_";
+                }
+
                 $this->fonnte->send($nomorKontak, $pesan);
             }
 
@@ -122,14 +172,23 @@ class WorkflowService
     /**
      * Internal function to record timeline.
      */
-    protected function catatTimeline(Permohonan $permohonan, ?StatusPermohonan $statusLama, StatusPermohonan $statusBaru, string $catatan, ?int $userId = null): void
-    {
+    protected function catatTimeline(
+        Permohonan $permohonan,
+        ?StatusPermohonan $statusLama,
+        StatusPermohonan $statusBaru,
+        string $catatan,
+        ?int $userId = null,
+        ?string $lampiranFile = null,
+        ?string $namaLampiran = null
+    ): void {
         PermohonanTimeline::create([
             'permohonan_id'     => $permohonan->id,
             'status_sebelumnya' => $statusLama?->value,
             'status_baru'       => $statusBaru->value,
             'catatan'           => $catatan,
             'user_id'           => $userId,
+            'lampiran_file'     => $lampiranFile,
+            'nama_lampiran'     => $namaLampiran,
         ]);
     }
 }

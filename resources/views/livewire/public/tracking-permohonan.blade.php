@@ -301,6 +301,57 @@
                     </dl>
                 </div>
 
+                {{-- HASIL AKHIR / DOKUMEN RESMI (JIKA SELESAI) --}}
+                @if($permohonan->status->value === 'completed')
+                    <div class="px-6 py-6 bg-gradient-to-br from-emerald-50 via-teal-50 to-green-50 border-b border-emerald-200">
+                        @if($permohonan->file_surat_jawaban)
+                            <div class="flex flex-col md:flex-row md:items-center justify-between gap-6">
+                                <div class="flex items-start gap-4">
+                                    <div class="w-12 h-12 rounded-2xl bg-emerald-600 text-white flex items-center justify-center flex-shrink-0 shadow-md shadow-emerald-600/30">
+                                        <svg class="w-7 h-7" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+                                    </div>
+                                    <div class="space-y-1">
+                                        <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[11px] font-black uppercase tracking-wider bg-emerald-200 text-emerald-900">
+                                            Dokumen Resmi Terbit
+                                        </span>
+                                        <h4 class="text-lg font-black text-emerald-950 font-display">Surat Persetujuan / Dokumen Hasil Pelayanan</h4>
+                                        <div class="text-xs text-emerald-800/90 font-medium space-y-0.5 pt-1">
+                                            @if($permohonan->nomor_surat_jawaban)
+                                                <p><span class="font-bold text-emerald-950">Nomor Surat:</span> {{ $permohonan->nomor_surat_jawaban }}</p>
+                                            @endif
+                                            @if($permohonan->perihal_surat_jawaban)
+                                                <p><span class="font-bold text-emerald-950">Perihal:</span> {{ $permohonan->perihal_surat_jawaban }}</p>
+                                            @endif
+                                            @if($permohonan->tanggal_surat_jawaban)
+                                                <p><span class="font-bold text-emerald-950">Tanggal Ditetapkan:</span> {{ $permohonan->tanggal_surat_jawaban->translatedFormat('d F Y') }}</p>
+                                            @endif
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="flex-shrink-0">
+                                    <a href="{{ asset('storage/' . $permohonan->file_surat_jawaban) }}" target="_blank" download class="w-full sm:w-auto inline-flex items-center justify-center gap-2.5 px-6 py-3.5 bg-emerald-600 hover:bg-emerald-700 text-white font-black text-xs uppercase tracking-wider rounded-xl shadow-lg shadow-emerald-600/30 transition transform hover:-translate-y-0.5">
+                                        <svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
+                                        <span>Unduh Surat Resmi</span>
+                                    </a>
+                                </div>
+                            </div>
+                        @else
+                            <div class="flex items-start gap-3">
+                                <div class="w-10 h-10 rounded-xl bg-emerald-600 text-white flex items-center justify-center flex-shrink-0 shadow-sm">
+                                    <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"></path></svg>
+                                </div>
+                                <div>
+                                    <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[11px] font-black uppercase tracking-wider bg-emerald-200 text-emerald-900">
+                                        Layanan Selesai
+                                    </span>
+                                    <h4 class="text-base font-black text-emerald-950 font-display mt-0.5">Permohonan Telah Dituntaskan</h4>
+                                    <p class="text-xs text-emerald-800/90 mt-1">Layanan atau pengaduan Anda telah selesai ditindaklanjuti dan dikonfirmasi oleh petugas berwenang Kanwil Kemenkumham / Ditjenpas Banten.</p>
+                                </div>
+                            </div>
+                        @endif
+                    </div>
+                @endif
+
                 <!-- Document Timeline -->
                 <div class="px-6 py-6 bg-white">
                     <h4 class="text-xs font-black text-gray-400 uppercase tracking-wider mb-6">Timeline Perjalanan Dokumen</h4>
@@ -329,6 +380,14 @@
                                                 <p class="mt-2 text-xs text-gray-600 bg-gray-50 p-3 rounded-lg border border-gray-100 italic leading-relaxed">
                                                     "{{ $timeline->catatan }}"
                                                 </p>
+                                                @endif
+                                                @if($timeline->lampiran_file)
+                                                <div class="mt-2">
+                                                    <a href="{{ asset('storage/' . $timeline->lampiran_file) }}" target="_blank" class="inline-flex items-center gap-1.5 text-xs text-emerald-700 hover:text-emerald-900 font-bold hover:underline transition">
+                                                        <svg class="w-3.5 h-3.5 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+                                                        <span>Lampiran Berkas: {{ $timeline->nama_lampiran ?? 'Dokumen Surat' }}</span>
+                                                    </a>
+                                                </div>
                                                 @endif
                                             </div>
                                             <div class="text-right text-xs whitespace-nowrap text-gray-500 font-semibold font-mono">

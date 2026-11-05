@@ -16,7 +16,8 @@ class Permohonan extends Model
 
     protected $fillable = [
         'tracking_number', 'user_id', 'master_layanan_id', 
-        'status', 'payload_data', 'tanggal_pengajuan', 'sla_deadline'
+        'status', 'payload_data', 'tanggal_pengajuan', 'sla_deadline',
+        'file_surat_jawaban', 'nomor_surat_jawaban', 'perihal_surat_jawaban', 'tanggal_surat_jawaban'
     ];
 
     protected $casts = [
@@ -24,6 +25,7 @@ class Permohonan extends Model
         'payload_data' => 'array',
         'tanggal_pengajuan' => 'date',
         'sla_deadline' => 'date',
+        'tanggal_surat_jawaban' => 'date',
     ];
 
     public function getActivitylogOptions(): LogOptions
@@ -37,6 +39,11 @@ class Permohonan extends Model
             ?? $this->payload_data['nama_pelapor']
             ?? $this->payload_data['nama_pemohon']
             ?? ($this->user->name ?? 'Anonim');
+    }
+
+    public function getFileSuratJawabanUrlAttribute(): ?string
+    {
+        return $this->file_surat_jawaban ? asset('storage/' . $this->file_surat_jawaban) : null;
     }
 
     public function user(): BelongsTo

@@ -46,21 +46,16 @@ graph TD
     F -->|Disposisi ke Bidang Kanwil| G[Status: Diproses - Admin Bidang]
     F -->|Disposisi ke UPT| H[Status: Diproses - Operator UPT]
     
-    G & H -->|Diproses Pelaksana| I{Tindak Lanjut}
-    I -->|Butuh Perbaikan| J[Status: Revisi]
-    J -->|Diperbaiki Pelaksana| G
-    I -->|Selesai Diproses| K(Status: Review Pimpinan)
-    
-    K -->|Ditinjau oleh Reviewer/Pimpinan| L{Persetujuan Akhir}
-    L -->|Butuh Revisi Lagi| J
-    L -->|Disetujui Pimpinan| M[Status: Selesai]
+    G & H -->|Tindak Lanjut & Arahan Terpenuhi| I{Selesai Diproses}
+    I -->|Butuh Perbaikan Pemohon| J[Status: Revisi]
+    J -->|Diperbaiki Pemohon| G
+    I -->|Tuntaskan Tindakan + Berkas/Konfirmasi| M[Status: Selesai]
     
     style A fill:#f9f,stroke:#333,stroke-width:2px
     style B fill:#bbf,stroke:#333,stroke-width:2px
     style E fill:#fdfd96,stroke:#333,stroke-width:2px
     style G fill:#ffb347,stroke:#333,stroke-width:2px
     style H fill:#ffb347,stroke:#333,stroke-width:2px
-    style K fill:#b3f6d4,stroke:#333,stroke-width:2px
     style M fill:#77dd77,stroke:#333,stroke-width:2px
     style D fill:#ff6961,stroke:#333,stroke-width:2px
 ```
@@ -93,17 +88,16 @@ graph TD
    * **Didisposisikan ke UPT:** (misal: Lapas Kelas IIA Serang, Rutan Kelas I Tangerang, dll.)
 3. Pejabat menulis catatan disposisi, lalu mengirimkannya. Sistem mengubah status permohonan menjadi `processing` (Diproses) dan mencatat instansi tujuan disposisi di tabel `permohonan_disposisis`.
 
-#### Tahap 4: Tindak Lanjut (Processing)
-1. **Admin Bidang** atau **Operator UPT** (sesuai tujuan disposisi) akan melihat permohonan masuk ke Inbox mereka.
-2. Pelaksana menindaklanjuti perintah disposisi, melakukan verifikasi lapangan, menyiapkan surat balasan, atau memproses izin yang diminta.
-3. Setelah selesai dikerjakan, pelaksana mengunggah draf jawaban/surat keputusan dan mengubah status ke `review` (Review Pimpinan).
-
-#### Tahap 5: Review Pimpinan & Penyelesaian (Completed)
-1. **Reviewer** atau **Pimpinan** menerima notifikasi review di Inbox mereka.
-2. Pimpinan memeriksa draf jawaban atau berkas hasil tindak lanjut pelaksana.
-3. Keputusan Pimpinan:
-   * **Setujui (Approve):** Berkas final disetujui, sistem mengubah status menjadi `completed` (Selesai). Pemohon menerima notifikasi WhatsApp otomatis bahwa pengajuannya telah **SELESAI** beserta tautan untuk mengunduh dokumen hasil jika ada.
-   * **Kembalikan (Revise):** Jika hasil kerja dirasa belum memadai, Pimpinan mengembalikan status ke `revision` (Revisi) agar diperbaiki oleh pelaksana.
+#### Tahap 4: Tindak Lanjut & Penyelesaian Langsung (Processing to Completed)
+1. **Admin Bidang** atau **Operator UPT** (sesuai tujuan disposisi) menerima permohonan masuk di Inbox mereka.
+2. Pelaksana menindaklanjuti instruksi disposisi (melakukan verifikasi lapangan, menyiapkan dokumen persetujuan, atau mengonfirmasi penanganan pengaduan).
+3. Setelah selesai ditindaklanjuti, pelaksana menyelesaikan permohonan melalui form aksi:
+   * **Dokumen Surat Persetujuan (Opsional):** Jika layanan menghasilkan surat resmi (misal izin penelitian/magang), pelaksana dapat menginput Nomor Surat, Perihal, Tanggal Penetapan, dan mengunggah file surat persetujuan (.pdf, .doc, .jpg). Jika permohonan berupa pengaduan atau konsultasi yang diselesaikan dengan klarifikasi langsung, bagian dokumen ini bersifat opsional dan dapat dikosongkan.
+   * **Catatan Penyelesaian:** Pelaksana menuliskan uraian/catatan hasil tindak lanjut.
+4. Klik **"Simpan & Tuntaskan Tindakan"**:
+   * Status permohonan langsung berubah menjadi `completed` (Selesai).
+   * Pemohon menerima notifikasi WhatsApp otomatis berisi konfirmasi selesai beserta nomor surat dan tautan unduh berkas resmi (jika diterbitkan).
+   * Pemohon juga dapat langsung melihat dan mengunduh berkas surat persetujuan di portal publik tracking STARPAS.
 
 ---
 

@@ -9,13 +9,19 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 class PermohonanTimeline extends Model
 {
     protected $fillable = [
-        'permohonan_id', 'status_sebelumnya', 'status_baru', 'catatan', 'user_id'
+        'permohonan_id', 'status_sebelumnya', 'status_baru', 'catatan', 'user_id',
+        'lampiran_file', 'nama_lampiran'
     ];
 
     protected $casts = [
         'status_sebelumnya' => StatusPermohonan::class,
         'status_baru' => StatusPermohonan::class,
     ];
+
+    public function getLampiranFileUrlAttribute(): ?string
+    {
+        return $this->lampiran_file ? asset('storage/' . $this->lampiran_file) : null;
+    }
 
     public function permohonan(): BelongsTo
     {
