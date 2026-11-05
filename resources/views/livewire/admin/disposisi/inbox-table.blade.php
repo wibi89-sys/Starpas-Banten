@@ -42,7 +42,7 @@
                 <nav class="flex space-x-6 overflow-x-auto py-2" aria-label="Tabs">
                     {{-- Tab 1: Semua --}}
                     <button wire:click="setTab('all')" type="button" class="whitespace-nowrap py-2.5 px-3 border-b-2 font-bold text-xs flex items-center gap-2 transition cursor-pointer {{ $activeTab === 'all' ? 'border-kanwil-blue text-kanwil-blue' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300' }}">
-                        <svg class="w-4 h-4 {{ $activeTab === 'all' ? 'text-kanwil-blue' : 'text-gray-400' }}" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 10h16M4 14h16M4 18h16"></path></svg>
+                        <svg width="16" height="16" class="w-4 h-4 {{ $activeTab === 'all' ? 'text-kanwil-blue' : 'text-gray-400' }}" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 10h16M4 14h16M4 18h16"></path></svg>
                         <span>Semua Permohonan</span>
                         <span class="ml-1 px-2 py-0.5 text-[10px] rounded-full font-black {{ $activeTab === 'all' ? 'bg-blue-100 text-kanwil-blue' : 'bg-gray-200 text-gray-700' }}">
                             {{ $totalCount }}
@@ -51,7 +51,7 @@
 
                     {{-- Tab 2: Perlu Tindak Lanjut --}}
                     <button wire:click="setTab('pending')" type="button" class="whitespace-nowrap py-2.5 px-3 border-b-2 font-bold text-xs flex items-center gap-2 transition cursor-pointer {{ $activeTab === 'pending' ? 'border-amber-500 text-amber-700' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300' }}">
-                        <svg class="w-4 h-4 {{ $activeTab === 'pending' ? 'text-amber-500' : 'text-gray-400' }}" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+                        <svg width="16" height="16" class="w-4 h-4 {{ $activeTab === 'pending' ? 'text-amber-500' : 'text-gray-400' }}" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
                         <span>Perlu Tindak Lanjut</span>
                         <span class="ml-1 px-2 py-0.5 text-[10px] rounded-full font-black {{ $pendingCount > 0 ? 'bg-amber-100 text-amber-800 border border-amber-300' : 'bg-gray-200 text-gray-700' }}">
                             {{ $pendingCount }}
@@ -60,7 +60,7 @@
 
                     {{-- Tab 3: Riwayat Selesai --}}
                     <button wire:click="setTab('completed')" type="button" class="whitespace-nowrap py-2.5 px-3 border-b-2 font-bold text-xs flex items-center gap-2 transition cursor-pointer {{ $activeTab === 'completed' ? 'border-emerald-600 text-emerald-800' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300' }}">
-                        <svg class="w-4 h-4 {{ $activeTab === 'completed' ? 'text-emerald-600' : 'text-gray-400' }}" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                        <svg width="16" height="16" class="w-4 h-4 {{ $activeTab === 'completed' ? 'text-emerald-600' : 'text-gray-400' }}" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
                         <span>Riwayat Selesai (Review)</span>
                         <span class="ml-1 px-2 py-0.5 text-[10px] rounded-full font-black {{ $completedCount > 0 ? 'bg-emerald-100 text-emerald-800 border border-emerald-300' : 'bg-gray-200 text-gray-700' }}">
                             {{ $completedCount }}
@@ -129,20 +129,20 @@
                                 <td class="px-6 py-4 whitespace-nowrap">
                                     @if($lastDisposisi)
                                         @if($lastDisposisi->keBidang)
-                                            <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-md text-[11px] font-bold bg-sky-50 text-sky-800 border border-sky-200">
-                                                <svg class="w-3 h-3 text-sky-600 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path></svg>
-                                                <span class="truncate max-w-[160px]">{{ $lastDisposisi->keBidang->nama_bidang }}</span>
+                                            <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-[11px] font-bold bg-sky-50 text-sky-800 border border-sky-200">
+                                                <span class="w-1.5 h-1.5 rounded-full bg-sky-500 flex-shrink-0"></span>
+                                                <span class="truncate max-w-[170px]" title="{{ $lastDisposisi->keBidang->nama_bidang }}">{{ $lastDisposisi->keBidang->nama_bidang }}</span>
                                             </span>
                                         @elseif($lastDisposisi->keUpt)
-                                            <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-md text-[11px] font-bold bg-amber-50 text-amber-800 border border-amber-200">
-                                                <svg class="w-3 h-3 text-amber-600 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 14v3m4-3v3m4-3v3M3 21h18M3 10h18M3 7l9-4 9 4M4 10h16v11H4V10z"></path></svg>
-                                                <span class="truncate max-w-[160px]">{{ $lastDisposisi->keUpt->nama_upt }}</span>
+                                            <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-[11px] font-bold bg-amber-50 text-amber-800 border border-amber-200">
+                                                <span class="w-1.5 h-1.5 rounded-full bg-amber-500 flex-shrink-0"></span>
+                                                <span class="truncate max-w-[170px]" title="{{ $lastDisposisi->keUpt->nama_upt }}">{{ $lastDisposisi->keUpt->nama_upt }}</span>
                                             </span>
                                         @else
                                             <span class="text-xs text-gray-400">-</span>
                                         @endif
                                     @else
-                                        <span class="text-xs text-gray-400 italic">Belum didisposisi</span>
+                                        <span class="text-[11px] text-gray-400 font-semibold italic bg-gray-50 px-2 py-0.5 rounded border border-gray-150">Belum didisposisi</span>
                                     @endif
                                 </td>
 
@@ -157,17 +157,17 @@
                                 <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                                     @if($statusVal === 'completed')
                                         <button wire:click="openAction({{ $p->id }})" class="inline-flex items-center gap-1.5 text-emerald-700 bg-emerald-50 hover:bg-emerald-600 hover:text-white border border-emerald-200 px-3.5 py-1.5 rounded-lg shadow-sm text-xs font-bold transition transform hover:-translate-y-0.5 cursor-pointer" title="Lihat hasil dan review riwayat tindak lanjut">
-                                            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path><path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path></svg>
+                                            <svg width="14" height="14" class="w-3.5 h-3.5 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path><path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path></svg>
                                             <span>Lihat / Review</span>
                                         </button>
                                     @elseif($statusVal === 'rejected')
                                         <button wire:click="openAction({{ $p->id }})" class="inline-flex items-center gap-1.5 text-gray-700 bg-gray-100 hover:bg-gray-200 border border-gray-300 px-3.5 py-1.5 rounded-lg shadow-sm text-xs font-bold transition cursor-pointer">
-                                            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                                            <svg width="14" height="14" class="w-3.5 h-3.5 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
                                             <span>Lihat Detail</span>
                                         </button>
                                     @else
                                         <button wire:click="openAction({{ $p->id }})" class="inline-flex items-center gap-1.5 text-white bg-kanwil-blue hover:bg-kanwil-blue-light px-3.5 py-1.5 rounded-lg shadow-sm text-xs font-bold transition transform hover:-translate-y-0.5 cursor-pointer">
-                                            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+                                            <svg width="14" height="14" class="w-3.5 h-3.5 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
                                             <span>Tindak Lanjut</span>
                                         </button>
                                     @endif
