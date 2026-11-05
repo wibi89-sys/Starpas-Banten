@@ -99,6 +99,15 @@ graph TD
    * Pemohon menerima notifikasi WhatsApp otomatis berisi konfirmasi selesai beserta nomor surat dan tautan unduh berkas resmi (jika diterbitkan).
    * Pemohon juga dapat langsung melihat dan mengunduh berkas surat persetujuan di portal publik tracking STARPAS.
 
+#### Tahap 5: Arsip Riwayat & Supervisi Review Pimpinan
+1. **Penyimpanan Permanen Riwayat:**
+   * Seluruh permohonan yang telah selesai **TIDAK HILANG** dari sistem.
+   * Operator UPT dan Admin Bidang dapat membuka tab **"Riwayat Selesai"** pada Inbox untuk melihat kembali berkas-berkas yang pernah mereka tuntaskan beserta catatan dan dokumen lampirannya.
+2. **Review & Evaluasi Pimpinan:**
+   * **Pimpinan** dan **Reviewer** dapat membuka seluruh permohonan yang telah diselesaikan oleh operator maupun admin tim melalui tombol **"Lihat / Review"**.
+   * Pimpinan dapat meninjau alur disposisi, catatan pelaksana, serta berkas surat persetujuan.
+   * Tersedia fitur **"Catatan Evaluasi / Review Pimpinan"** pada halaman detail agar pimpinan dapat membubuhkan arahan supervisi atau catatan evaluasi tindak lanjut secara resmi ke dalam log riwayat (*audit trail*).
+
 ---
 
 ## 4. Struktur Database & Model Data Utama
