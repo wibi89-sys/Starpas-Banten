@@ -70,6 +70,5 @@
         <footer class="relative z-10 text-center py-4 pb-[max(1rem,env(safe-area-inset-bottom))] text-[11px] font-medium text-gray-400">
             &copy; {{ date('Y') }} Kantor Wilayah Ditjenpas Banten &bull; STARPAS v2.0
         </footer>
-        <x-pwa-install-prompt />
     </body>
 </html>
