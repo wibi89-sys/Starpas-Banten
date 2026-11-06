@@ -39,8 +39,8 @@
             </div>
         </header>
 
-        <div class="min-h-screen pt-4 sm:pt-8 pb-12 sm:pb-16 flex flex-col items-center relative z-10 px-3 sm:px-4">
-            <div class="w-full sm:max-w-3xl mt-4 sm:mt-6 px-4 py-6 sm:px-6 sm:py-8 bg-white shadow-lg rounded-xl border-t-4 border-kanwil-gold">
+        <div class="min-h-screen pt-3 sm:pt-8 pb-12 sm:pb-16 flex flex-col items-center relative z-10 px-3 sm:px-4">
+            <div class="w-full sm:max-w-3xl mt-2 sm:mt-6 px-4 py-6 sm:px-8 sm:py-9 bg-white shadow-xl rounded-2xl sm:rounded-3xl border-t-4 border-kanwil-gold">
                 {{ $slot }}
             </div>
         </div>
