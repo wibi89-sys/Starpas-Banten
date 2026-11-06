@@ -1,12 +1,16 @@
 {
+  "id": "/",
   "name": "STARPAS Banten",
   "short_name": "STARPAS",
   "description": "Sistem Terpadu Aksi Responsif Pemasyarakatan Banten",
   "start_url": "/",
+  "scope": "/",
   "display": "standalone",
+  "display_override": ["standalone", "minimal-ui", "browser"],
   "background_color": "#ffffff",
   "theme_color": "#1e3a8a",
   "orientation": "portrait-primary",
+  "categories": ["government", "productivity", "utilities"],
   "icons": [
     {
       "src": "/icon-192x192.png",
@@ -19,6 +23,43 @@
       "type": "image/png",
       "sizes": "512x512",
       "purpose": "any maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Lacak Permohonan",
+      "short_name": "Lacak",
+      "description": "Pantau status permohonan dengan kode tracking",
+      "url": "/#tracking-section",
+      "icons": [{ "src": "/icon-192x192.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "Layanan Pengaduan",
+      "short_name": "Pengaduan",
+      "description": "Kirim laporan pengaduan pelanggaran",
+      "url": "/layanan/pengaduan",
+      "icons": [{ "src": "/icon-192x192.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "Layanan Perizinan",
+      "short_name": "Perizinan",
+      "description": "Pengajuan izin magang & penelitian",
+      "url": "/layanan/perizinan",
+      "icons": [{ "src": "/icon-192x192.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "Layanan Informasi",
+      "short_name": "Informasi",
+      "description": "Permintaan informasi publik PPID",
+      "url": "/layanan/informasi",
+      "icons": [{ "src": "/icon-192x192.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "Login Petugas / Admin",
+      "short_name": "Login",
+      "description": "Masuk ke Command Center internal",
+      "url": "/login",
+      "icons": [{ "src": "/icon-192x192.png", "sizes": "192x192" }]
     }
   ]
 }

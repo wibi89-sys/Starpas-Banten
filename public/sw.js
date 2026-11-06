@@ -1,7 +1,9 @@
-const CACHE_NAME = 'starpas-banten-v3';
+const CACHE_NAME = 'starpas-banten-v4';
 const urlsToCache = [
   '/manifest.json',
-  '/offline.html'
+  '/offline.html',
+  '/icon-192x192.png',
+  '/icon-512x512.png'
 ];
 
 self.addEventListener('install', event => {

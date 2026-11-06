@@ -468,4 +468,7 @@
             setTimeout(type, 1000);
         });
     </script>
+
+    <!-- Smart PWA Install Prompt for Android & iOS -->
+    <x-pwa-install-prompt />
 </div>
