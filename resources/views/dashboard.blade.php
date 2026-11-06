@@ -14,8 +14,8 @@
         </h2>
     </x-slot>
 
-    <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-8">
+    <div class="py-4 sm:py-8 lg:py-12">
+        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6 sm:space-y-8">
             
             <!-- Welcome Banner -->
             <div class="bg-gradient-to-r from-[#0B2B5E] to-[#1E3A8A] rounded-2xl shadow-xl overflow-hidden relative">

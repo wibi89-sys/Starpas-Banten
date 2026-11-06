@@ -108,12 +108,13 @@
                         </span>
                         Upload Kartu Identitas (KTP/KTM/Paspor, Maks 5MB, Wajib)
                     </label>
-                    <div class="mt-2">
-                        <label class="cursor-pointer bg-gray-100 hover:bg-gray-200 text-gray-700 px-4 py-2.5 text-sm border-r border-gray-300 font-medium transition select-none flex-shrink-0">
-                            Pilih File
+                    <div class="mt-2 flex items-center border border-gray-300 rounded-lg overflow-hidden bg-white shadow-sm">
+                        <label class="cursor-pointer bg-gray-100 hover:bg-gray-200 text-gray-700 px-3 sm:px-4 py-2.5 text-xs sm:text-sm border-r border-gray-300 font-medium transition select-none shrink-0 flex items-center gap-1.5">
+                            <svg class="w-4 h-4 text-gray-500 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"/></svg>
+                            <span>Pilih File</span>
                             <input id="kartu_identitas" wire:model="kartu_identitas" type="file" accept="image/*,application/pdf" class="hidden">
                         </label>
-                        <span class="text-sm text-gray-500 px-3 truncate">
+                        <span class="text-xs sm:text-sm text-gray-500 px-3 truncate flex-1">
                             @if ($kartu_identitas)
                                 {{ $kartu_identitas->getClientOriginalName() }}
                             @else
@@ -133,12 +134,13 @@
                         </span>
                         Upload Surat Pengantar (PDF saja, Wajib)
                     </label>
-                    <div class="mt-2">
-                        <label class="cursor-pointer bg-gray-100 hover:bg-gray-200 text-gray-700 px-4 py-2.5 text-sm border-r border-gray-300 font-medium transition select-none flex-shrink-0">
-                            Pilih File
+                    <div class="mt-2 flex items-center border border-gray-300 rounded-lg overflow-hidden bg-white shadow-sm">
+                        <label class="cursor-pointer bg-gray-100 hover:bg-gray-200 text-gray-700 px-3 sm:px-4 py-2.5 text-xs sm:text-sm border-r border-gray-300 font-medium transition select-none shrink-0 flex items-center gap-1.5">
+                            <svg class="w-4 h-4 text-gray-500 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"/></svg>
+                            <span>Pilih File</span>
                             <input id="surat_pengantar" wire:model="surat_pengantar" type="file" accept="application/pdf" class="hidden">
                         </label>
-                        <span class="text-sm text-gray-500 px-3 truncate">
+                        <span class="text-xs sm:text-sm text-gray-500 px-3 truncate flex-1">
                             @if ($surat_pengantar)
                                 {{ $surat_pengantar->getClientOriginalName() }}
                             @else
@@ -153,7 +155,7 @@
 
             <!-- Submit Button (Full width, Gold background, Paper plane icon) -->
             <div class="pt-2">
-                <button type="submit" wire:loading.attr="disabled" disabled class="group relative w-full overflow-hidden rounded-xl py-4 px-6 font-extrabold text-sm tracking-wide text-white transition duration-300 disabled:cursor-not-allowed bg-gradient-to-br from-amber-400 via-kanwil-gold to-yellow-600 shadow-lg shadow-kanwil-gold/30 hover:shadow-xl hover:shadow-kanwil-gold/40 hover:-translate-y-0.5">
+                <button type="submit" wire:loading.attr="disabled" class="group relative w-full overflow-hidden rounded-xl py-4 px-6 font-extrabold text-sm tracking-wide text-white transition duration-300 disabled:cursor-not-allowed bg-gradient-to-br from-amber-400 via-kanwil-gold to-yellow-600 shadow-lg shadow-kanwil-gold/30 hover:shadow-xl hover:shadow-kanwil-gold/40 hover:-translate-y-0.5 cursor-pointer">
                     <span class="relative z-10 flex items-center justify-center gap-2.5">
                         <span wire:loading.remove wire:target="submit" class="flex items-center gap-2.5">
                             Kirim Permohonan Perizinan

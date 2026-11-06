@@ -452,11 +452,11 @@
                             </div>
                             
                             {{-- TOMBOL AKSI --}}
-                            <div class="pt-4 flex flex-wrap justify-end gap-3 border-t border-gray-200">
-                                <a href="{{ route('admin.inbox') }}" wire:navigate class="inline-flex justify-center items-center py-2.5 px-6 border border-gray-300 shadow-sm text-sm font-bold rounded-xl text-gray-700 bg-white hover:bg-gray-100 transition">
+                            <div class="pt-4 flex flex-col-reverse sm:flex-row justify-end gap-3 border-t border-gray-200">
+                                <a href="{{ route('admin.inbox') }}" wire:navigate class="w-full sm:w-auto inline-flex justify-center items-center py-2.5 px-6 border border-gray-300 shadow-sm text-sm font-bold rounded-xl text-gray-700 bg-white hover:bg-gray-100 transition">
                                     Kembali ke Inbox
                                 </a>
-                                <button type="submit" wire:loading.attr="disabled" class="inline-flex justify-center items-center gap-2 py-2.5 px-6 border border-transparent shadow-md text-sm font-bold rounded-xl text-white bg-kanwil-blue hover:bg-kanwil-blue-light focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-kanwil-blue transition disabled:opacity-50 cursor-pointer">
+                                <button type="submit" wire:loading.attr="disabled" class="w-full sm:w-auto inline-flex justify-center items-center gap-2 py-2.5 px-6 border border-transparent shadow-md text-sm font-bold rounded-xl text-white bg-kanwil-blue hover:bg-kanwil-blue-light focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-kanwil-blue transition disabled:opacity-50 cursor-pointer">
                                     <svg wire:loading class="animate-spin -ml-1 h-4 w-4 text-white" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path></svg>
                                     <span wire:loading.remove>Simpan & Tuntaskan Tindakan</span>
                                     <span wire:loading>Memproses...</span>

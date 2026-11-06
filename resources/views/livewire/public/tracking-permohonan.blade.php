@@ -105,7 +105,7 @@
                         }
                     @endphp
 
-                    <h1 class="text-6xl sm:text-7xl md:text-8xl font-black tracking-tight leading-none mb-3 font-display">
+                    <h1 class="text-5xl sm:text-7xl md:text-8xl font-black tracking-tight leading-none mb-3 font-display">
                         <span class="bg-clip-text text-transparent bg-gradient-to-r from-white via-white to-emerald-300">
                             {{ $settings->singkatan ?? 'STARPAS' }}
                         </span>
@@ -188,7 +188,7 @@
 
                 <!-- Right Side Form Card (Overlapping wave divider) -->
                 <div class="lg:col-span-5 flex justify-center -mb-20 lg:-mb-36 relative z-20 -translate-y-8 lg:-translate-y-20 order-1">
-                    <div class="w-full max-w-md bg-white rounded-2xl shadow-2xl p-8 border border-gray-100 relative text-gray-800 animate-float">
+                    <div class="w-full max-w-md bg-white rounded-2xl shadow-2xl p-5 sm:p-8 border border-gray-100 relative text-gray-800 animate-float">
                         <div class="flex justify-center mb-6">
                             <div class="h-14 w-14 rounded-full bg-emerald-50 border border-emerald-100 flex items-center justify-center shadow-inner">
                                 <svg class="w-6 h-6 text-[#0d5240]" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
@@ -371,7 +371,7 @@
                                                 </svg>
                                             </span>
                                         </div>
-                                        <div class="min-w-0 flex-1 pt-1.5 flex justify-between space-x-4">
+                                        <div class="min-w-0 flex-1 pt-1.5 flex flex-col sm:flex-row sm:justify-between gap-1 sm:gap-4">
                                             <div>
                                                 <p class="text-sm font-bold text-gray-900">
                                                     Status berubah menjadi <span class="text-[#071d24] font-black">{{ $timeline->status_baru->label() }}</span>
@@ -390,7 +390,7 @@
                                                 </div>
                                                 @endif
                                             </div>
-                                            <div class="text-right text-xs whitespace-nowrap text-gray-500 font-semibold font-mono">
+                                            <div class="text-left sm:text-right text-[11px] sm:text-xs text-gray-500 font-semibold font-mono shrink-0">
                                                 <time datetime="{{ $timeline->created_at }}">{{ $timeline->created_at->diffForHumans() }}</time>
                                             </div>
                                         </div>

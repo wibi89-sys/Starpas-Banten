@@ -7,7 +7,7 @@
         {{-- KARTU UTAMA TABEL INBOX & RIWAYAT --}}
         <div class="bg-white shadow rounded-2xl border-t-4 border-kanwil-gold overflow-hidden">
             {{-- HEADER BAGIAN ATAS --}}
-            <div class="p-6 border-b border-gray-100 flex flex-col md:flex-row md:items-center justify-between gap-4">
+            <div class="p-4 sm:p-6 border-b border-gray-100 flex flex-col md:flex-row md:items-center justify-between gap-4">
                 <div>
                     <h3 class="text-xl font-black text-kanwil-blue">Daftar Permohonan & Kotak Masuk</h3>
                     <p class="text-xs text-gray-500 mt-0.5">
@@ -38,8 +38,8 @@
             </div>
 
             {{-- TAB NAVIGATION (SEMUA | PERLU TINDAK LANJUT | RIWAYAT SELESAI) --}}
-            <div class="bg-gray-50/80 px-6 border-b border-gray-200">
-                <nav class="flex space-x-6 overflow-x-auto py-2" aria-label="Tabs">
+            <div class="bg-gray-50/80 px-4 sm:px-6 border-b border-gray-200">
+                <nav class="flex space-x-3 sm:space-x-6 overflow-x-auto py-2" aria-label="Tabs">
                     {{-- Tab 1: Semua --}}
                     <button wire:click="setTab('all')" type="button" class="whitespace-nowrap py-2.5 px-3 border-b-2 font-bold text-xs flex items-center gap-2 transition cursor-pointer {{ $activeTab === 'all' ? 'border-kanwil-blue text-kanwil-blue' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300' }}">
                         <svg width="16" height="16" class="w-4 h-4 {{ $activeTab === 'all' ? 'text-kanwil-blue' : 'text-gray-400' }}" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 10h16M4 14h16M4 18h16"></path></svg>
