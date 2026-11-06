@@ -229,9 +229,48 @@
                     </div>
                 </div>
 
-                {{-- UPT Table --}}
+                {{-- UPT Table Container --}}
                 <div class="bg-white shadow rounded-lg overflow-hidden">
-                    <div class="overflow-x-auto">
+                    {{-- 1. TAMPILAN MOBILE: KARTU UPT (md:hidden, Nol Geser Horizontal) --}}
+                    <div class="block md:hidden divide-y divide-gray-150 p-3 space-y-3">
+                        @forelse($upts as $upt)
+                            <div class="bg-gray-50/70 rounded-2xl p-4 border border-gray-200/90 shadow-xs space-y-3">
+                                <div class="flex items-start justify-between gap-2">
+                                    <div class="min-w-0">
+                                        <h4 class="text-sm font-bold text-gray-900 leading-tight">{{ $upt->nama_upt }}</h4>
+                                        <span class="inline-block mt-1 px-2.5 py-0.5 rounded-full text-[10px] font-bold border bg-blue-100 text-kanwil-blue border-blue-200">
+                                            {{ $upt->jenis_upt }}
+                                        </span>
+                                    </div>
+                                    <div class="flex items-center gap-1 shrink-0">
+                                        <button wire:click="openEditUpt({{ $upt->id }})" class="p-2 text-blue-600 hover:bg-blue-100 rounded-xl bg-white border border-gray-200 transition" title="Edit">
+                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
+                                        </button>
+                                        <button wire:click="confirmDeleteUpt({{ $upt->id }})" class="p-2 text-red-600 hover:bg-red-100 rounded-xl bg-white border border-gray-200 transition" title="Hapus">
+                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <p class="text-xs text-gray-500 leading-relaxed">{{ $upt->alamat ?? 'Alamat belum diatur' }}</p>
+
+                                <div class="pt-2 border-t border-gray-200/60 flex items-center justify-between">
+                                    <span class="text-xs font-semibold text-gray-600">Status Aktif:</span>
+                                    <button type="button" wire:click="toggleUptActive({{ $upt->id }})"
+                                        class="relative inline-flex h-6 w-11 items-center rounded-full transition-colors duration-200 focus:outline-none {{ $upt->is_active ? 'bg-green-500' : 'bg-gray-300' }}">
+                                        <span class="inline-block h-4 w-4 transform rounded-full bg-white shadow transition-transform duration-200 {{ $upt->is_active ? 'translate-x-6' : 'translate-x-1' }}"></span>
+                                    </button>
+                                </div>
+                            </div>
+                        @empty
+                            <div class="py-8 text-center text-gray-400 text-xs">
+                                Tidak ada data UPT ditemukan
+                            </div>
+                        @endforelse
+                    </div>
+
+                    {{-- 2. TAMPILAN DESKTOP: TABEL LEBAR (hidden md:block) --}}
+                    <div class="hidden md:block overflow-x-auto">
                         <table class="min-w-full divide-y divide-gray-200">
                             <thead class="bg-gray-50">
                                 <tr>
@@ -327,9 +366,39 @@
                     </div>
                 </div>
 
-                {{-- Table Roles --}}
+                {{-- Table Roles Container --}}
                 <div class="bg-white shadow rounded-lg overflow-hidden">
-                    <div class="overflow-x-auto">
+                    {{-- 1. TAMPILAN MOBILE: KARTU LEVEL USER (md:hidden, Nol Geser Horizontal) --}}
+                    <div class="block md:hidden divide-y divide-gray-150 p-3 space-y-3">
+                        @forelse($roles as $role)
+                            <div class="bg-gray-50/70 rounded-2xl p-4 border border-gray-200/90 shadow-xs space-y-3">
+                                <div class="flex items-center justify-between gap-2">
+                                    <h4 class="text-sm font-bold text-gray-900">{{ $role->name }}</h4>
+                                    <div class="flex items-center gap-1 shrink-0">
+                                        <button wire:click="openEditRole({{ $role->id }})" class="p-2 text-blue-600 hover:bg-blue-100 rounded-xl bg-white border border-gray-200 transition" title="Edit">
+                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
+                                        </button>
+                                        <button wire:click="confirmDeleteRole({{ $role->id }})" class="p-2 text-red-600 hover:bg-red-100 rounded-xl bg-white border border-gray-200 transition" title="Hapus">
+                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="pt-2 border-t border-gray-200/60 flex items-center justify-between">
+                                    <span class="text-xs text-gray-500">Anggota Aktif:</span>
+                                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold bg-blue-100 text-kanwil-blue">
+                                        {{ $role->user_count }} Pengguna
+                                    </span>
+                                </div>
+                            </div>
+                        @empty
+                            <div class="py-8 text-center text-gray-400 text-xs">
+                                Tidak ada level user ditemukan
+                            </div>
+                        @endforelse
+                    </div>
+
+                    {{-- 2. TAMPILAN DESKTOP: TABEL LEBAR (hidden md:block) --}}
+                    <div class="hidden md:block overflow-x-auto">
                         <table class="min-w-full divide-y divide-gray-200">
                             <thead class="bg-gray-50">
                                 <tr>
@@ -408,9 +477,43 @@
                     </div>
                 </div>
 
-                {{-- Tim Table --}}
+                {{-- Tim Table Container --}}
                 <div class="bg-white shadow rounded-lg overflow-hidden">
-                    <div class="overflow-x-auto">
+                    {{-- 1. TAMPILAN MOBILE: KARTU TIM (md:hidden, Nol Geser Horizontal) --}}
+                    <div class="block md:hidden divide-y divide-gray-150 p-3 space-y-3">
+                        @forelse($bidangs as $bidang)
+                            <div class="bg-gray-50/70 rounded-2xl p-4 border border-gray-200/90 shadow-xs space-y-3">
+                                <div class="flex items-start justify-between gap-2">
+                                    <h4 class="text-sm font-bold text-gray-900 leading-tight">{{ $bidang->nama_bidang }}</h4>
+                                    <div class="flex items-center gap-1 shrink-0">
+                                        <button wire:click="openEditBidang({{ $bidang->id }})" class="p-2 text-blue-600 hover:bg-blue-100 rounded-xl bg-white border border-gray-200 transition" title="Edit">
+                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
+                                        </button>
+                                        <button wire:click="confirmDeleteBidang({{ $bidang->id }})" class="p-2 text-red-600 hover:bg-red-100 rounded-xl bg-white border border-gray-200 transition" title="Hapus">
+                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <p class="text-xs text-gray-500 leading-relaxed">{{ $bidang->deskripsi ?? 'Tidak ada deskripsi' }}</p>
+
+                                <div class="pt-2 border-t border-gray-200/60 flex items-center justify-between">
+                                    <span class="text-xs font-semibold text-gray-600">Status Aktif:</span>
+                                    <button type="button" wire:click="toggleBidangActive({{ $bidang->id }})"
+                                        class="relative inline-flex h-6 w-11 items-center rounded-full transition-colors duration-200 focus:outline-none {{ $bidang->is_active ? 'bg-green-500' : 'bg-gray-300' }}">
+                                        <span class="inline-block h-4 w-4 transform rounded-full bg-white shadow transition-transform duration-200 {{ $bidang->is_active ? 'translate-x-6' : 'translate-x-1' }}"></span>
+                                    </button>
+                                </div>
+                            </div>
+                        @empty
+                            <div class="py-8 text-center text-gray-400 text-xs">
+                                Tidak ada data tim ditemukan
+                            </div>
+                        @endforelse
+                    </div>
+
+                    {{-- 2. TAMPILAN DESKTOP: TABEL LEBAR (hidden md:block) --}}
+                    <div class="hidden md:block overflow-x-auto">
                         <table class="min-w-full divide-y divide-gray-200">
                             <thead class="bg-gray-50">
                                 <tr>

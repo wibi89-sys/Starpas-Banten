@@ -44,9 +44,81 @@
             </div>
         </div>
 
-        {{-- Users Table --}}
+        {{-- Users Table Container --}}
         <div class="bg-white shadow rounded-xl overflow-hidden">
-            <div class="overflow-x-auto">
+            {{-- 1. TAMPILAN MOBILE: KARTU PENGGUNA (md:hidden, Nol Geser Horizontal) --}}
+            <div class="block md:hidden divide-y divide-gray-100 p-3 space-y-3">
+                @forelse($users as $user)
+                    @php
+                        $userRoles = $user->getRoleNames();
+                    @endphp
+                    <div class="bg-gray-50/70 rounded-2xl p-4 border border-gray-200/90 shadow-xs space-y-3">
+                        <div class="flex items-start justify-between gap-3">
+                            <div class="flex items-center gap-2.5 min-w-0">
+                                <div class="h-10 w-10 rounded-full bg-kanwil-gold/15 border border-kanwil-gold/30 flex items-center justify-center font-black text-kanwil-gold text-sm shrink-0">
+                                    {{ strtoupper(substr($user->name, 0, 1)) }}
+                                </div>
+                                <div class="min-w-0">
+                                    <p class="text-sm font-bold text-gray-900 truncate">
+                                        {{ $user->name }}
+                                        @if($user->id === auth()->id())
+                                            <span class="text-[11px] text-kanwil-gold font-bold ml-1">(Anda)</span>
+                                        @endif
+                                    </p>
+                                    <p class="text-xs text-gray-500 truncate">{{ $user->email }}</p>
+                                </div>
+                            </div>
+
+                            <div class="flex items-center gap-1 shrink-0">
+                                <button wire:click="openEdit({{ $user->id }})" class="p-2 text-blue-600 hover:bg-blue-100 rounded-xl bg-white border border-gray-200 transition" title="Edit">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
+                                </button>
+                                @if($user->id !== auth()->id())
+                                    <button wire:click="confirmDelete({{ $user->id }})" class="p-2 text-red-600 hover:bg-red-100 rounded-xl bg-white border border-gray-200 transition" title="Hapus">
+                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
+                                    </button>
+                                @endif
+                            </div>
+                        </div>
+
+                        <div class="pt-1 flex flex-wrap gap-1.5 border-t border-gray-200/60">
+                            @forelse($userRoles as $roleName)
+                                @php
+                                    $roleColor = match($roleName) {
+                                        'Super Admin'       => 'bg-purple-100 text-purple-800 border-purple-200',
+                                        'Admin Pelayanan'   => 'bg-blue-100 text-blue-800 border-blue-200',
+                                        'Pejabat Disposisi' => 'bg-amber-100 text-amber-800 border-amber-200',
+                                        'Admin Bidang'      => 'bg-green-100 text-green-800 border-green-200',
+                                        'Operator UPT'      => 'bg-indigo-100 text-indigo-800 border-indigo-200',
+                                        'Reviewer'          => 'bg-teal-100 text-teal-800 border-teal-200',
+                                        'Pimpinan'          => 'bg-rose-100 text-rose-800 border-rose-200',
+                                        'Publik'            => 'bg-gray-100 text-gray-800 border-gray-200',
+                                        default             => 'bg-gray-50 text-gray-600 border-gray-200',
+                                    };
+                                @endphp
+                                <span class="px-2.5 py-0.5 rounded-full text-[11px] font-bold border {{ $roleColor }}">
+                                    {{ $roleName }}
+                                    @if($roleName === 'Admin Bidang' && $user->bidang)
+                                        <span class="font-normal opacity-75">({{ $user->bidang->nama_bidang }})</span>
+                                    @endif
+                                    @if($roleName === 'Operator UPT' && $user->upt)
+                                        <span class="font-normal opacity-75">({{ $user->upt->nama_upt }})</span>
+                                    @endif
+                                </span>
+                            @empty
+                                <span class="text-xs text-gray-400 italic">Tidak ada role</span>
+                            @endforelse
+                        </div>
+                    </div>
+                @empty
+                    <div class="py-10 text-center text-gray-400 text-xs">
+                        Tidak ada pengguna ditemukan
+                    </div>
+                @endforelse
+            </div>
+
+            {{-- 2. TAMPILAN DESKTOP: TABEL LEBAR (hidden md:block) --}}
+            <div class="hidden md:block overflow-x-auto">
                 <table class="min-w-full divide-y divide-gray-200">
                     <thead class="bg-gray-50">
                         <tr>

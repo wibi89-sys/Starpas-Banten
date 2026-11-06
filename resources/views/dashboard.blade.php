@@ -129,7 +129,57 @@
                         <h3 class="text-base sm:text-lg font-bold text-kanwil-blue">Aktivitas Permohonan Terkini</h3>
                         <a href="{{ route('admin.inbox') }}" wire:navigate class="text-sm font-semibold text-kanwil-gold hover:text-yellow-600 transition self-start sm:self-auto">Lihat Semua &rarr;</a>
                     </div>
-                    <div class="overflow-x-auto">
+                    {{-- 1. TAMPILAN MOBILE: LIST KARTU NATIVE (md:hidden, Nol Geser Horizontal) --}}
+                    <div class="block md:hidden divide-y divide-gray-100 p-3 space-y-2.5">
+                        @forelse($recentPermohonans as $p)
+                            @php
+                                $namaPemohon = $p->nama_pemohon;
+                                $initial = strtoupper(substr($namaPemohon, 0, 1));
+                                $statusLabel = $p->status->label();
+                                $statusClass = match($p->status) {
+                                    \App\Enums\StatusPermohonan::COMPLETED => 'bg-green-100 text-green-800 border-green-200',
+                                    \App\Enums\StatusPermohonan::REJECTED  => 'bg-red-100 text-red-800 border-red-200',
+                                    \App\Enums\StatusPermohonan::REVISION  => 'bg-orange-100 text-orange-800 border-orange-200',
+                                    \App\Enums\StatusPermohonan::PROCESSING, \App\Enums\StatusPermohonan::REVIEW => 'bg-blue-100 text-kanwil-blue border-blue-200',
+                                    default => 'bg-yellow-100 text-yellow-800 border-yellow-200',
+                                };
+                            @endphp
+                            <div class="bg-gray-50/70 rounded-xl p-3 border border-gray-150 space-y-2">
+                                <div class="flex items-center justify-between gap-2">
+                                    <span class="font-mono font-bold text-[11px] text-kanwil-blue bg-white px-2 py-0.5 rounded border border-gray-200">
+                                        {{ $p->tracking_number }}
+                                    </span>
+                                    <span class="px-2.5 py-0.5 inline-flex text-[10px] font-black rounded-full border {{ $statusClass }}">
+                                        {{ $statusLabel }}
+                                    </span>
+                                </div>
+                                
+                                <div class="flex items-center gap-2.5">
+                                    <div class="h-8 w-8 rounded-full bg-blue-100 text-kanwil-blue font-bold flex items-center justify-center text-xs shrink-0">
+                                        {{ $initial }}
+                                    </div>
+                                    <div class="min-w-0 flex-1">
+                                        <p class="text-xs font-bold text-gray-900 truncate">{{ $namaPemohon }}</p>
+                                        <p class="text-[11px] text-gray-500 truncate">{{ $p->layanan->nama_layanan ?? '-' }} &bull; {{ $p->created_at->diffForHumans() }}</p>
+                                    </div>
+                                </div>
+
+                                <div class="pt-1 flex justify-end">
+                                    <a href="{{ route('admin.inbox.detail', ['permohonan' => $p->id]) }}" wire:navigate class="w-full text-center py-2 bg-white hover:bg-gray-100 border border-gray-200 rounded-lg text-xs font-bold text-kanwil-blue flex items-center justify-center gap-1.5 transition">
+                                        <span>{{ $p->status->value === 'completed' ? 'Review Permohonan' : 'Buka Permohonan' }}</span>
+                                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+                                    </a>
+                                </div>
+                            </div>
+                        @empty
+                            <div class="py-8 text-center text-gray-400 text-xs font-medium">
+                                Belum ada permohonan masuk
+                            </div>
+                        @endforelse
+                    </div>
+
+                    {{-- 2. TAMPILAN DESKTOP: TABEL LEBAR (hidden md:block) --}}
+                    <div class="hidden md:block overflow-x-auto">
                         <table class="min-w-full divide-y divide-gray-200">
                             <thead class="bg-gray-50/50">
                                 <tr>

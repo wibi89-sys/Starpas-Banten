@@ -69,8 +69,96 @@
                 </nav>
             </div>
 
-            {{-- TABEL DATA PERMOHONAN --}}
-            <div class="overflow-x-auto">
+            {{-- 1. TAMPILAN MOBILE: NATIVE CARD FEED (md:hidden, Nol Geser Horizontal) --}}
+            <div class="block md:hidden divide-y divide-gray-150 p-3 space-y-3">
+                @forelse ($permohonans as $p)
+                    @php
+                        $lastDisposisi = $p->disposisis->last();
+                        $statusVal = $p->status->value;
+                        
+                        $badgeClass = match($statusVal) {
+                            'completed'    => 'bg-emerald-100 text-emerald-800 border-emerald-300',
+                            'processing'   => 'bg-blue-100 text-blue-800 border-blue-300',
+                            'disposition'  => 'bg-amber-100 text-amber-800 border-amber-300',
+                            'verification' => 'bg-indigo-100 text-indigo-800 border-indigo-300',
+                            'review'       => 'bg-purple-100 text-purple-800 border-purple-300',
+                            'revision'     => 'bg-orange-100 text-orange-800 border-orange-300',
+                            'rejected'     => 'bg-rose-100 text-rose-800 border-rose-300',
+                            default        => 'bg-gray-100 text-gray-800 border-gray-300',
+                        };
+                    @endphp
+                    <div class="bg-white rounded-2xl p-4 border border-gray-200/90 shadow-sm space-y-3">
+                        {{-- Baris Atas: Nomor Resi & Status Badge --}}
+                        <div class="flex items-center justify-between gap-2">
+                            <span class="font-mono font-black text-xs text-kanwil-blue bg-blue-50/90 px-2.5 py-1 rounded-lg border border-blue-200/90 shadow-xs">
+                                {{ $p->tracking_number }}
+                            </span>
+                            <span class="px-3 py-1 inline-flex text-xs leading-none font-black rounded-full border shadow-xs {{ $badgeClass }}">
+                                {{ $p->status->label() }}
+                            </span>
+                        </div>
+
+                        {{-- Baris Tengah: Info Pemohon & Layanan --}}
+                        <div class="flex items-start gap-3 pt-1">
+                            <div class="h-10 w-10 rounded-full bg-blue-100/70 border border-blue-200 text-kanwil-blue font-black flex items-center justify-center shrink-0 text-sm shadow-xs">
+                                {{ strtoupper(substr($p->nama_pemohon, 0, 1)) }}
+                            </div>
+                            <div class="min-w-0 flex-1">
+                                <h4 class="text-sm font-bold text-gray-900 truncate leading-tight">{{ $p->nama_pemohon }}</h4>
+                                <p class="text-xs text-kanwil-blue font-semibold truncate mt-0.5">{{ $p->layanan->nama_layanan ?? 'Pelayanan' }}</p>
+                                <p class="text-[11px] text-gray-400 font-medium mt-1">
+                                    {{ $p->tanggal_pengajuan ? $p->tanggal_pengajuan->format('d/m/Y') : $p->created_at->format('d/m/Y') }} &bull; {{ $p->created_at->diffForHumans() }}
+                                </p>
+                            </div>
+                        </div>
+
+                        {{-- Tujuan Disposisi (Jika Ada) --}}
+                        @if($lastDisposisi)
+                            <div class="bg-gray-50/80 rounded-xl p-2.5 text-xs flex items-center gap-1.5 border border-gray-150">
+                                <span class="text-gray-400 font-semibold shrink-0">Tujuan Disposisi:</span>
+                                @if($lastDisposisi->keBidang)
+                                    <span class="font-bold text-sky-800 truncate">🏛️ {{ $lastDisposisi->keBidang->nama_bidang }}</span>
+                                @elseif($lastDisposisi->keUpt)
+                                    <span class="font-bold text-amber-900 truncate">🏢 {{ $lastDisposisi->keUpt->nama_upt }}</span>
+                                @else
+                                    <span class="text-gray-400">-</span>
+                                @endif
+                            </div>
+                        @endif
+
+                        {{-- Tombol Aksi Penuh (Thumb-Friendly) --}}
+                        <div class="pt-2 border-t border-gray-100">
+                            @if($statusVal === 'completed')
+                                <button wire:click="openAction({{ $p->id }})" class="w-full py-2.5 px-4 rounded-xl text-xs font-bold text-emerald-800 bg-emerald-50 hover:bg-emerald-100 border border-emerald-200 flex items-center justify-center gap-2 transition active:scale-[0.99] cursor-pointer">
+                                    <svg class="w-4 h-4 text-emerald-700 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
+                                    <span>Lihat Hasil & Review</span>
+                                </button>
+                            @elseif($statusVal === 'rejected')
+                                <button wire:click="openAction({{ $p->id }})" class="w-full py-2.5 px-4 rounded-xl text-xs font-bold text-gray-700 bg-gray-100 hover:bg-gray-200 border border-gray-300 flex items-center justify-center gap-2 transition active:scale-[0.99] cursor-pointer">
+                                    <svg class="w-4 h-4 text-gray-500 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                                    <span>Lihat Detail Penolakan</span>
+                                </button>
+                            @else
+                                <button wire:click="openAction({{ $p->id }})" class="w-full py-2.5 px-4 rounded-xl text-xs font-bold text-white bg-kanwil-blue hover:bg-kanwil-blue-light shadow-sm flex items-center justify-center gap-2 transition active:scale-[0.99] cursor-pointer">
+                                    <svg class="w-4 h-4 text-amber-400 shrink-0" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+                                    <span>Buka & Tindak Lanjuti</span>
+                                </button>
+                            @endif
+                        </div>
+                    </div>
+                @empty
+                    <div class="py-12 text-center text-gray-500">
+                        <div class="h-14 w-14 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-2 text-gray-400">
+                            <svg class="h-7 w-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4"/></svg>
+                        </div>
+                        <p class="text-sm font-bold text-gray-800">Tidak ada permohonan</p>
+                        <p class="text-xs text-gray-400 mt-0.5">Semua data pada tab ini kosong atau sudah selesai.</p>
+                    </div>
+                @endforelse
+            </div>
+
+            {{-- 2. TAMPILAN DESKTOP: TABEL LEBAR (hidden md:block) --}}
+            <div class="hidden md:block overflow-x-auto">
                 <table class="min-w-full divide-y divide-gray-200">
                     <thead class="bg-gray-50/75">
                         <tr>
