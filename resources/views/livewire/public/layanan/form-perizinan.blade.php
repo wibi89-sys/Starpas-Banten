@@ -94,9 +94,10 @@
 
                         <div>
                             <label for="instansi" class="block text-xs font-bold text-gray-700 mb-1.5">
-                                Instansi / Perguruan Tinggi / Asal <span class="text-red-500">*</span>
+                                Asal Instansi / Universitas / Sekolah Pemohon <span class="text-red-500">*</span>
                             </label>
                             <input type="text" wire:model="instansi" id="instansi" class="block w-full rounded-xl border-gray-300 shadow-sm focus:border-kanwil-blue focus:ring-kanwil-blue text-xs sm:text-sm py-2.5 px-3.5 transition" placeholder="Contoh: Universitas Sultan Ageng Tirtayasa">
+                            <p class="text-[11px] text-gray-500 mt-1">Nama kampus atau lembaga asal Anda saat ini.</p>
                             @error('instansi') <span class="text-red-500 text-xs mt-1 block font-semibold">{{ $message }}</span> @enderror
                         </div>
                     </div>
@@ -133,11 +134,31 @@
                     </div>
                 </div>
 
-                {{-- BAGIAN 2: RINCIAN PERIZINAN --}}
+                {{-- BAGIAN 2: RINCIAN RENCANA KEGIATAN & INSTANSI TUJUAN --}}
                 <div class="bg-gray-50/80 rounded-2xl p-4 sm:p-5 border border-gray-200/90 space-y-4">
                     <div class="flex items-center gap-2 border-b border-gray-200/70 pb-3">
                         <span class="flex items-center justify-center w-6 h-6 rounded-full bg-kanwil-blue text-white text-xs font-black">2</span>
-                        <h3 class="text-xs sm:text-sm font-black uppercase tracking-wider text-kanwil-blue">Rincian Rencana Kegiatan</h3>
+                        <h3 class="text-xs sm:text-sm font-black uppercase tracking-wider text-kanwil-blue">Rincian Rencana Kegiatan & Instansi Tujuan</h3>
+                    </div>
+
+                    {{-- SATKER / UPT TUJUAN --}}
+                    <div>
+                        <label for="tujuan_satuan_kerja" class="block text-xs font-bold text-gray-700 mb-1.5">
+                            Satuan Kerja / UPT Pemasyarakatan Tujuan <span class="text-red-500">*</span>
+                        </label>
+                        <select wire:model="tujuan_satuan_kerja" id="tujuan_satuan_kerja" class="block w-full rounded-xl border-gray-300 shadow-sm focus:border-kanwil-blue focus:ring-kanwil-blue text-xs sm:text-sm py-2.5 px-3.5 transition font-semibold">
+                            <option value="">-- Pilih Kantor Wilayah atau UPT Tempat Kegiatan --</option>
+                            <option value="kanwil">🏢 Kantor Wilayah Ditjenpas Banten (Tingkat Wilayah)</option>
+                            @if(isset($upts))
+                                @foreach($upts as $upt)
+                                    @if($upt->is_active)
+                                        <option value="upt:{{ $upt->id }}">🏛️ {{ $upt->nama_upt }} ({{ $upt->jenis_upt }})</option>
+                                    @endif
+                                @endforeach
+                            @endif
+                        </select>
+                        <p class="text-[11px] text-gray-500 mt-1">Pilih satuan kerja atau UPT yang menjadi lokasi pelaksanaan riset, magang, atau kunjungan Anda.</p>
+                        @error('tujuan_satuan_kerja') <span class="text-red-500 text-xs mt-1 block font-semibold">{{ $message }}</span> @enderror
                     </div>
 
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -147,9 +168,10 @@
                             </label>
                             <select wire:model="jenis_perizinan" id="jenis_perizinan" class="block w-full rounded-xl border-gray-300 shadow-sm focus:border-kanwil-blue focus:ring-kanwil-blue text-xs sm:text-sm py-2.5 px-3.5 transition font-semibold">
                                 <option value="">-- Pilih Jenis Perizinan --</option>
-                                <option value="Magang / PKL">Magang / PKL</option>
+                                <option value="Magang / PKL">Magang / Praktik Kerja Lapangan (PKL)</option>
                                 <option value="Penelitian">Penelitian / Riset Tugas Akhir</option>
                                 <option value="Kunjungan Dinas">Kunjungan Dinas / Studi Banding</option>
+                                <option value="Observasi / Wawancara">Observasi / Wawancara Akademis</option>
                                 <option value="Lainnya">Lainnya</option>
                             </select>
                             @error('jenis_perizinan') <span class="text-red-500 text-xs mt-1 block font-semibold">{{ $message }}</span> @enderror
@@ -164,11 +186,30 @@
                         </div>
                     </div>
 
+                    {{-- Periode Tanggal Pelaksanaan --}}
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                            <label for="tanggal_mulai" class="block text-xs font-bold text-gray-700 mb-1.5">
+                                Rencana Tanggal Mulai <span class="text-gray-400 font-normal">(Opsional)</span>
+                            </label>
+                            <input type="date" wire:model="tanggal_mulai" id="tanggal_mulai" class="block w-full rounded-xl border-gray-300 shadow-sm focus:border-kanwil-blue focus:ring-kanwil-blue text-xs sm:text-sm py-2 px-3.5 transition">
+                            @error('tanggal_mulai') <span class="text-red-500 text-xs mt-1 block font-semibold">{{ $message }}</span> @enderror
+                        </div>
+
+                        <div>
+                            <label for="tanggal_selesai" class="block text-xs font-bold text-gray-700 mb-1.5">
+                                Rencana Tanggal Selesai <span class="text-gray-400 font-normal">(Opsional)</span>
+                            </label>
+                            <input type="date" wire:model="tanggal_selesai" id="tanggal_selesai" class="block w-full rounded-xl border-gray-300 shadow-sm focus:border-kanwil-blue focus:ring-kanwil-blue text-xs sm:text-sm py-2 px-3.5 transition">
+                            @error('tanggal_selesai') <span class="text-red-500 text-xs mt-1 block font-semibold">{{ $message }}</span> @enderror
+                        </div>
+                    </div>
+
                     <div>
                         <label for="uraian" class="block text-xs font-bold text-gray-700 mb-1.5">
-                            Uraian Ringkas (Lokasi UPT, Waktu Pelaksanaan & Judul/Tujuan) <span class="text-red-500">*</span>
+                            Judul Riset / Rincian Program Kegiatan <span class="text-red-500">*</span>
                         </label>
-                        <textarea id="uraian" wire:model="uraian" rows="3" class="block w-full rounded-xl border-gray-300 shadow-sm focus:border-kanwil-blue focus:ring-kanwil-blue text-xs sm:text-sm py-2.5 px-3.5 transition" placeholder="Jelaskan UPT yang dituju (misal: Lapas Kelas IIA Serang), rentang tanggal pelaksanaan, serta topik riset/magang..."></textarea>
+                        <textarea id="uraian" wire:model="uraian" rows="3" class="block w-full rounded-xl border-gray-300 shadow-sm focus:border-kanwil-blue focus:ring-kanwil-blue text-xs sm:text-sm py-2.5 px-3.5 transition leading-relaxed" placeholder="Tuliskan judul penelitian / fokus bidang magang / pokok tujuan kunjungan secara jelas..."></textarea>
                         @error('uraian') <span class="text-red-500 text-xs mt-1 block font-semibold">{{ $message }}</span> @enderror
                     </div>
                 </div>

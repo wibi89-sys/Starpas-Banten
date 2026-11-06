@@ -4,6 +4,7 @@ namespace App\Livewire\Public\Layanan;
 
 use App\Enums\StatusPermohonan;
 use App\Models\MasterLayanan;
+use App\Models\MasterUpt;
 use App\Models\Permohonan;
 use App\Services\WorkflowService;
 use Livewire\Component;
@@ -20,6 +21,7 @@ class FormInformasi extends Component
     public $nomor_identitas;
     public $alamat_lengkap;
     public $nomor_hp;
+    public $tujuan_satuan_kerja = '';
     public $jenis_informasi;
     public $tujuan_penggunaan;
     public $lampiran_surat_permohonan;
@@ -36,6 +38,7 @@ class FormInformasi extends Component
             'nomor_identitas' => 'required|string|max:16|digits:16',
             'alamat_lengkap' => 'required|string|max:500',
             'nomor_hp' => ['required', 'string', 'max:20', 'regex:/^(08|62)\d{8,13}$/'],
+            'tujuan_satuan_kerja' => 'required|string',
             'jenis_informasi' => 'required|string|max:255',
             'tujuan_penggunaan' => 'required|string|max:255',
             'lampiran_surat_permohonan' => 'required|file|mimes:pdf,jpg,jpeg,png|max:5120',
@@ -45,6 +48,7 @@ class FormInformasi extends Component
 
     protected $messages = [
         'nomor_hp.regex' => 'Nomor HP harus diawali 08 atau 62 dan hanya berisi angka.',
+        'tujuan_satuan_kerja.required' => 'Pilih Kantor Wilayah atau UPT Pemasyarakatan yang dituju.',
     ];
 
     public function submit(WorkflowService $workflowService)
@@ -60,12 +64,21 @@ class FormInformasi extends Component
         $pathSurat = $this->lampiran_surat_permohonan->store('lampiran_permohonan', 'public');
         $pathKtp = $this->lampiran_ktp->store('lampiran_identitas', 'public');
 
+        $tujuanTipe = str_starts_with($this->tujuan_satuan_kerja, 'upt:') ? 'upt' : 'kanwil';
+        $tujuanUptId = $tujuanTipe === 'upt' ? (int) substr($this->tujuan_satuan_kerja, 4) : null;
+        $tujuanLabel = $tujuanTipe === 'kanwil'
+            ? 'Kantor Wilayah Ditjenpas Banten'
+            : (MasterUpt::find($tujuanUptId)?->nama_upt ?? 'UPT Pemasyarakatan');
+
         $payload = [
             'nama_lengkap' => $this->nama_pemohon,
             'instansi_asal' => $this->instansi_asal,
             'nik' => $this->nomor_identitas,
             'alamat_lengkap' => $this->alamat_lengkap,
             'nomor_hp' => $this->nomor_hp,
+            'tujuan_tipe' => $tujuanTipe,
+            'tujuan_upt_id' => $tujuanUptId,
+            'tujuan_label' => $tujuanLabel,
             'uraian_informasi' => $this->jenis_informasi,
             'tujuan_penggunaan' => $this->tujuan_penggunaan,
             'lampiran_surat_path' => $pathSurat,
@@ -81,6 +94,9 @@ class FormInformasi extends Component
 
     public function render()
     {
-        return view('livewire.public.layanan.form-informasi');
+        $upts = MasterUpt::where('is_active', true)->orderBy('nama_upt')->get();
+        return view('livewire.public.layanan.form-informasi', [
+            'upts' => $upts
+        ]);
     }
 }

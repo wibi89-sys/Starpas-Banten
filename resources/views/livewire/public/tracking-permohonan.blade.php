@@ -331,9 +331,23 @@
                 $namaMasked = $namaRaw ?: 'Masyarakat Umum';
             }
 
-            // UPT Tujuan / Lokasi Satker
+            // Asal Instansi / Kampus / Lembaga Pemohon
+            $asalInstansi = $permohonan->payload_data['instansi'] 
+                ?? ($permohonan->payload_data['instansi_asal'] ?? null);
+
+            // UPT Tujuan / Lokasi Satker yang Dituju
             $tujuanSatker = $permohonan->payload_data['tujuan_label'] 
-                ?? ($permohonan->payload_data['instansi'] ?? 'Kantor Wilayah Ditjenpas Banten');
+                ?? 'Kantor Wilayah Ditjenpas Banten';
+
+            // Periode Rencana Kegiatan (Jika ada)
+            $periodeKegiatan = null;
+            if (!empty($permohonan->payload_data['tanggal_mulai'])) {
+                $tglMulai = \Carbon\Carbon::parse($permohonan->payload_data['tanggal_mulai'])->translatedFormat('d M Y');
+                $tglSelesai = !empty($permohonan->payload_data['tanggal_selesai']) 
+                    ? \Carbon\Carbon::parse($permohonan->payload_data['tanggal_selesai'])->translatedFormat('d M Y')
+                    : 'Selesai';
+                $periodeKegiatan = "{$tglMulai} s/d {$tglSelesai}";
+            }
 
             // Ringkasan Uraian / Perihal
             $perihalSingkat = $permohonan->payload_data['uraian'] 
@@ -536,51 +550,82 @@
                         </div>
 
                         <!-- Pemohon / Pelapor -->
-                        <div class="bg-gray-50/80 rounded-2xl p-3.5 border border-gray-150">
-                            <dt class="text-[10px] font-black text-gray-400 uppercase tracking-wider flex items-center gap-1.5">
-                                <svg class="w-3.5 h-3.5 text-slate-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>
-                                <span>Nama Pemohon</span>
-                            </dt>
-                            <dd class="mt-1 text-xs sm:text-sm font-black text-gray-900">
-                                {{ $namaMasked }}
-                            </dd>
-                            <span class="inline-block mt-1 text-[10px] font-semibold text-emerald-700">
-                                Privasi terlindungi
-                            </span>
+                        <div class="bg-gray-50/80 rounded-2xl p-3.5 border border-gray-150 flex flex-col justify-between">
+                            <div>
+                                <dt class="text-[10px] font-black text-gray-400 uppercase tracking-wider flex items-center gap-1.5">
+                                    <svg class="w-3.5 h-3.5 text-slate-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>
+                                    <span>Nama Pemohon</span>
+                                </dt>
+                                <dd class="mt-1 text-xs sm:text-sm font-black text-gray-900 truncate">
+                                    {{ $namaMasked }}
+                                </dd>
+                            </div>
+                            <div class="mt-1 pt-1 border-t border-gray-200/50">
+                                @if($asalInstansi)
+                                    <span class="text-[10px] font-bold text-sky-800 truncate block" title="{{ $asalInstansi }}">
+                                        🎓 Asal: {{ $asalInstansi }}
+                                    </span>
+                                @else
+                                    <span class="text-[10px] font-semibold text-emerald-700 block">
+                                        Privasi terlindungi
+                                    </span>
+                                @endif
+                            </div>
                         </div>
 
                         <!-- Tujuan / Satker -->
-                        <div class="bg-gray-50/80 rounded-2xl p-3.5 border border-gray-150">
-                            <dt class="text-[10px] font-black text-gray-400 uppercase tracking-wider flex items-center gap-1.5">
-                                <svg class="w-3.5 h-3.5 text-slate-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/></svg>
-                                <span>Satker Tujuan</span>
-                            </dt>
-                            <dd class="mt-1 text-xs sm:text-sm font-bold text-gray-900 leading-snug">
-                                {{ $tujuanSatker }}
-                            </dd>
+                        <div class="bg-gray-50/80 rounded-2xl p-3.5 border border-gray-150 flex flex-col justify-between">
+                            <div>
+                                <dt class="text-[10px] font-black text-gray-400 uppercase tracking-wider flex items-center gap-1.5">
+                                    <svg class="w-3.5 h-3.5 text-slate-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/></svg>
+                                    <span>Satker / UPT Tujuan</span>
+                                </dt>
+                                <dd class="mt-1 text-xs sm:text-sm font-black text-[#0d5240] leading-snug">
+                                    {{ $tujuanSatker }}
+                                </dd>
+                            </div>
+                            <div class="mt-1 pt-1 border-t border-gray-200/50">
+                                <span class="text-[10px] font-bold text-slate-500 block">
+                                    🏛️ Lokasi Pelaksanaan / Instansi
+                                </span>
+                            </div>
                         </div>
 
                         <!-- Tanggal Masuk -->
-                        <div class="bg-gray-50/80 rounded-2xl p-3.5 border border-gray-150">
-                            <dt class="text-[10px] font-black text-gray-400 uppercase tracking-wider flex items-center gap-1.5">
-                                <svg class="w-3.5 h-3.5 text-slate-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
-                                <span>Tanggal Masuk</span>
-                            </dt>
-                            <dd class="mt-1 text-xs sm:text-sm font-bold text-gray-900">
-                                {{ $permohonan->tanggal_pengajuan->translatedFormat('d F Y') }}
-                            </dd>
-                            <span class="inline-block mt-1 text-[10px] font-mono text-gray-400">
-                                {{ $permohonan->created_at->diffForHumans() }}
-                            </span>
+                        <div class="bg-gray-50/80 rounded-2xl p-3.5 border border-gray-150 flex flex-col justify-between">
+                            <div>
+                                <dt class="text-[10px] font-black text-gray-400 uppercase tracking-wider flex items-center gap-1.5">
+                                    <svg class="w-3.5 h-3.5 text-slate-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+                                    <span>Tanggal Masuk</span>
+                                </dt>
+                                <dd class="mt-1 text-xs sm:text-sm font-bold text-gray-900">
+                                    {{ $permohonan->tanggal_pengajuan->translatedFormat('d F Y') }}
+                                </dd>
+                            </div>
+                            <div class="mt-1 pt-1 border-t border-gray-200/50">
+                                <span class="text-[10px] font-mono text-gray-400 block">
+                                    {{ $permohonan->created_at->diffForHumans() }}
+                                </span>
+                            </div>
                         </div>
                     </dl>
 
-                    @if($perihalSingkat)
-                        <div class="mt-4 p-3.5 bg-slate-50 rounded-xl border border-dashed border-gray-200">
-                            <span class="text-[10px] font-black text-gray-400 uppercase tracking-wider block mb-1">Inti Pengajuan / Perihal</span>
-                            <p class="text-xs text-gray-700 leading-relaxed italic line-clamp-2">
-                                "{{ $perihalSingkat }}"
-                            </p>
+                    @if($periodeKegiatan || $perihalSingkat)
+                        <div class="mt-4 p-3.5 bg-slate-50 rounded-xl border border-dashed border-gray-200 space-y-1.5">
+                            @if($periodeKegiatan)
+                                <div class="flex items-center gap-2 text-xs text-gray-700">
+                                    <span class="text-[10px] font-black text-gray-400 uppercase tracking-wider">Periode Rencana:</span>
+                                    <span class="font-bold text-[#0d5240] font-mono">📅 {{ $periodeKegiatan }}</span>
+                                </div>
+                            @endif
+                            @if($perihalSingkat)
+                                <div>
+                                    <span class="text-[10px] font-black text-gray-400 uppercase tracking-wider block mb-0.5">Inti Pengajuan / Perihal</span>
+                                    <p class="text-xs text-gray-700 leading-relaxed italic line-clamp-2">
+                                        "{{ $perihalSingkat }}"
+                                    </p>
+                                </div>
+                            @endif
                         </div>
                     @endif
                 </div>

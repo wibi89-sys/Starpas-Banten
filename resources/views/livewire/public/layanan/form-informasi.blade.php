@@ -94,9 +94,10 @@
 
                         <div>
                             <label for="instansi_asal" class="block text-xs font-bold text-gray-700 mb-1.5">
-                                Instansi / Lembaga / Media / Mandiri <span class="text-red-500">*</span>
+                                Asal Instansi / Lembaga / Media / Kampus <span class="text-red-500">*</span>
                             </label>
-                            <input type="text" wire:model="instansi_asal" id="instansi_asal" class="block w-full rounded-xl border-gray-300 shadow-sm focus:border-amber-500 focus:ring-amber-500 text-xs sm:text-sm py-2.5 px-3.5 transition" placeholder="Contoh: Media Pos Banten / Masyarakat Umum">
+                            <input type="text" wire:model="instansi_asal" id="instansi_asal" class="block w-full rounded-xl border-gray-300 shadow-sm focus:border-amber-500 focus:ring-amber-500 text-xs sm:text-sm py-2.5 px-3.5 transition" placeholder="Contoh: Media Pos Banten / Untirta / Masyarakat Mandiri">
+                            <p class="text-[11px] text-gray-500 mt-1">Nama lembaga, organisasi, atau perwakilan asal Anda.</p>
                             @error('instansi_asal') <span class="text-red-500 text-xs mt-1 block font-semibold">{{ $message }}</span> @enderror
                         </div>
                     </div>
@@ -158,11 +159,31 @@
                     </div>
                 </div>
 
-                {{-- BAGIAN 2: DETAIL INFORMASI YANG DIMINTA --}}
+                {{-- BAGIAN 2: DETAIL INFORMASI YANG DIMINTA & SATKER TUJUAN --}}
                 <div class="bg-gray-50/80 rounded-2xl p-4 sm:p-5 border border-gray-200/90 space-y-4">
                     <div class="flex items-center gap-2 border-b border-gray-200/70 pb-3">
                         <span class="flex items-center justify-center w-6 h-6 rounded-full bg-amber-600 text-white text-xs font-black">2</span>
-                        <h3 class="text-xs sm:text-sm font-black uppercase tracking-wider text-amber-900">Rincian Informasi & Tujuan</h3>
+                        <h3 class="text-xs sm:text-sm font-black uppercase tracking-wider text-amber-900">Rincian Informasi & Satker Tujuan</h3>
+                    </div>
+
+                    {{-- SATKER / UPT TUJUAN --}}
+                    <div>
+                        <label for="tujuan_satuan_kerja" class="block text-xs font-bold text-gray-700 mb-1.5">
+                            Tujuan Unit / Satuan Kerja Pengelola Informasi <span class="text-red-500">*</span>
+                        </label>
+                        <select wire:model="tujuan_satuan_kerja" id="tujuan_satuan_kerja" class="block w-full rounded-xl border-gray-300 shadow-sm focus:border-amber-500 focus:ring-amber-500 text-xs sm:text-sm py-2.5 px-3.5 transition font-semibold">
+                            <option value="">-- Pilih Kantor Wilayah atau UPT Sumber Informasi --</option>
+                            <option value="kanwil">🏢 PPID Kantor Wilayah Ditjenpas Banten (Tingkat Wilayah)</option>
+                            @if(isset($upts))
+                                @foreach($upts as $upt)
+                                    @if($upt->is_active)
+                                        <option value="upt:{{ $upt->id }}">🏛️ {{ $upt->nama_upt }} ({{ $upt->jenis_upt }})</option>
+                                    @endif
+                                @endforeach
+                            @endif
+                        </select>
+                        <p class="text-[11px] text-gray-500 mt-1">Pilih satuan kerja atau UPT yang mengelola data informasi publik yang Anda butuhkan.</p>
+                        @error('tujuan_satuan_kerja') <span class="text-red-500 text-xs mt-1 block font-semibold">{{ $message }}</span> @enderror
                     </div>
 
                     <div>
